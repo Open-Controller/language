@@ -1,0 +1,49 @@
+WHITESPACE = _{ " " | "\n" | "\t" }
+char = { ASCII_ALPHANUMERIC | "_" }
+
+// matches anything between 2 double quotes
+double_quoted_string = @{ "\"" ~ (!("\"") ~ ANY)* ~ "\""}
+// matches anything between 2 single quotes
+single_quoted_string = @{ "\'" ~ (!("\'") ~ ANY)* ~ "\'"}
+
+string = @{
+    double_quoted_string |
+    single_quoted_string
+}
+int = @{ "-" ? ~ ("0" | '1'..'9' ~ '0'..'9' * ) }
+float = @{
+    "-" ? ~
+    (
+        "0" ~ "." ~ '0'..'9' + |
+        '1'..'9' ~ '0'..'9' * ~ "." ~ '0'..'9' +
+    )
+}
+bool = @{ "true" | "false" }
+
+map_pair = { "@" ~ ident ~ expr }
+map = { "{" ~ (map_pair)? ~ ("," ~ map_pair)* ~ "}"}
+list = { "[" ~ (expr)? ~ ("," ~ expr)* ~ "]"}
+
+xml_param = { ident ~ "=" ~ expr }
+widget = { "<" ~ ident ~ (xml_param)* ~ ">" ~ (widget | "{" ~ expr ~ "}")* ~ "</" ~ ident ~ ">" }
+
+struct_param = { ":" ~ ident ~ (expr | map | list) }
+
+house = { "(" ~ "defhouse" ~ (struct_param)+ ~ ")" }
+room = { "(" ~ "defroom" ~ (struct_param)+ ~ ")" }
+controller = { "(" ~ "defcontroller" ~ (struct_param)+ ~ ")" }
+display_interface = { "(" ~ "defdisplayinterface" ~ (struct_param)+ ~ ")" }
+device = { "(" ~ "defdevice" ~ (struct_param)+ ~ ")" }
+
+ident = @{ (char)+ | "+" | "-" | "*" | "/" | "%" | "$" | "=" | "!" | ">" | "<" }
+ref_expr = @{ ident }
+lambda_args = { (ident)? ~ ("," ~ ident)* }
+lambda = { "(" ~ "lambda" ~ "(" ~ lambda_args ~ ")" ~ expr ~ ")" }
+get_lambda = { "(" ~ expr ~ "." ~ ident ~ ")" }
+if_expr = { "(" ~ "if" ~ expr  ~ expr ~ expr ~ ")" }
+call = { "(" ~ (expr)+ ~ ")" }
+
+expr = { widget | string | float | int | bool | ref_expr | lambda | house | room | controller | display_interface | device | get_lambda | if_expr | call }
+
+import = { "import" ~ string ~ "as" ~ ident }
+module = { SOI ~ (import)* ~ expr ~ EOI }
