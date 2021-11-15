@@ -31,7 +31,6 @@ pub struct HouseExpr {
     pub display_name: ::protobuf::MessageField<Expr>,
     pub id: ::protobuf::MessageField<Expr>,
     pub rooms: ::std::collections::HashMap<::std::string::String, Expr>,
-    pub devices: ::std::collections::HashMap<::std::string::String, Expr>,
     // special fields
     pub unknown_fields: ::protobuf::UnknownFields,
     pub cached_size: ::protobuf::rt::CachedSize,
@@ -64,11 +63,6 @@ impl HouseExpr {
             "rooms",
             |m: &HouseExpr| { &m.rooms },
             |m: &mut HouseExpr| { &mut m.rooms },
-        ));
-        fields.push(::protobuf::reflect::rt::v2::make_map_simpler_accessor::<_, _, _>(
-            "devices",
-            |m: &HouseExpr| { &m.devices },
-            |m: &mut HouseExpr| { &mut m.devices },
         ));
         ::protobuf::reflect::GeneratedMessageDescriptorData::new_2::<HouseExpr>(
             "HouseExpr",
@@ -112,9 +106,6 @@ impl ::protobuf::Message for HouseExpr {
                 3 => {
                     ::protobuf::rt::read_map_into::<::protobuf::reflect::types::ProtobufTypeString, ::protobuf::reflect::types::ProtobufTypeMessage<Expr>>(wire_type, is, &mut self.rooms)?;
                 },
-                4 => {
-                    ::protobuf::rt::read_map_into::<::protobuf::reflect::types::ProtobufTypeString, ::protobuf::reflect::types::ProtobufTypeMessage<Expr>>(wire_type, is, &mut self.devices)?;
-                },
                 _ => {
                     ::protobuf::rt::read_unknown_or_skip_group(field_number, wire_type, is, self.mut_unknown_fields())?;
                 },
@@ -136,7 +127,6 @@ impl ::protobuf::Message for HouseExpr {
             my_size += 1 + ::protobuf::rt::compute_raw_varint32_size(len) + len;
         }
         my_size += ::protobuf::rt::compute_map_size::<::protobuf::reflect::types::ProtobufTypeString, ::protobuf::reflect::types::ProtobufTypeMessage<Expr>>(3, &self.rooms);
-        my_size += ::protobuf::rt::compute_map_size::<::protobuf::reflect::types::ProtobufTypeString, ::protobuf::reflect::types::ProtobufTypeMessage<Expr>>(4, &self.devices);
         my_size += ::protobuf::rt::unknown_fields_size(self.get_unknown_fields());
         self.cached_size.set(my_size);
         my_size
@@ -150,7 +140,6 @@ impl ::protobuf::Message for HouseExpr {
             ::protobuf::rt::write_message_field_with_cached_size(2, v, os)?;
         }
         ::protobuf::rt::write_map_with_cached_sizes::<::protobuf::reflect::types::ProtobufTypeString, ::protobuf::reflect::types::ProtobufTypeMessage<Expr>>(3, &self.rooms, os)?;
-        ::protobuf::rt::write_map_with_cached_sizes::<::protobuf::reflect::types::ProtobufTypeString, ::protobuf::reflect::types::ProtobufTypeMessage<Expr>>(4, &self.devices, os)?;
         os.write_unknown_fields(self.get_unknown_fields())?;
         ::std::result::Result::Ok(())
     }
@@ -186,7 +175,6 @@ impl ::protobuf::Clear for HouseExpr {
         self.display_name.clear();
         self.id.clear();
         self.rooms.clear();
-        self.devices.clear();
         self.unknown_fields.clear();
     }
 }
@@ -334,7 +322,7 @@ impl ::protobuf::Message for RoomExpr {
     }
 
     fn descriptor_static() -> ::protobuf::reflect::MessageDescriptor {
-        ::protobuf::reflect::MessageDescriptor::new_generated_2(file_descriptor(), 3)
+        ::protobuf::reflect::MessageDescriptor::new_generated_2(file_descriptor(), 2)
     }
 
     fn default_instance() -> &'static RoomExpr {
@@ -505,7 +493,7 @@ impl ::protobuf::Message for ControllerExpr {
     }
 
     fn descriptor_static() -> ::protobuf::reflect::MessageDescriptor {
-        ::protobuf::reflect::MessageDescriptor::new_generated_2(file_descriptor(), 5)
+        ::protobuf::reflect::MessageDescriptor::new_generated_2(file_descriptor(), 4)
     }
 
     fn default_instance() -> &'static ControllerExpr {
@@ -637,7 +625,7 @@ impl ::protobuf::Message for DisplayInterfaceExpr {
     }
 
     fn descriptor_static() -> ::protobuf::reflect::MessageDescriptor {
-        ::protobuf::reflect::MessageDescriptor::new_generated_2(file_descriptor(), 6)
+        ::protobuf::reflect::MessageDescriptor::new_generated_2(file_descriptor(), 5)
     }
 
     fn default_instance() -> &'static DisplayInterfaceExpr {
@@ -755,7 +743,7 @@ impl ::protobuf::Message for DeviceExpr {
     }
 
     fn descriptor_static() -> ::protobuf::reflect::MessageDescriptor {
-        ::protobuf::reflect::MessageDescriptor::new_generated_2(file_descriptor(), 7)
+        ::protobuf::reflect::MessageDescriptor::new_generated_2(file_descriptor(), 6)
     }
 
     fn default_instance() -> &'static DeviceExpr {
@@ -986,7 +974,7 @@ impl ::protobuf::Message for WidgetExpr {
     }
 
     fn descriptor_static() -> ::protobuf::reflect::MessageDescriptor {
-        ::protobuf::reflect::MessageDescriptor::new_generated_2(file_descriptor(), 9)
+        ::protobuf::reflect::MessageDescriptor::new_generated_2(file_descriptor(), 8)
     }
 
     fn default_instance() -> &'static WidgetExpr {
@@ -1150,7 +1138,7 @@ impl ::protobuf::Message for RefExpr {
     }
 
     fn descriptor_static() -> ::protobuf::reflect::MessageDescriptor {
-        ::protobuf::reflect::MessageDescriptor::new_generated_2(file_descriptor(), 11)
+        ::protobuf::reflect::MessageDescriptor::new_generated_2(file_descriptor(), 10)
     }
 
     fn default_instance() -> &'static RefExpr {
@@ -1296,7 +1284,7 @@ impl ::protobuf::Message for LambdaExpr {
     }
 
     fn descriptor_static() -> ::protobuf::reflect::MessageDescriptor {
-        ::protobuf::reflect::MessageDescriptor::new_generated_2(file_descriptor(), 12)
+        ::protobuf::reflect::MessageDescriptor::new_generated_2(file_descriptor(), 11)
     }
 
     fn default_instance() -> &'static LambdaExpr {
@@ -1450,7 +1438,7 @@ impl ::protobuf::Message for CallExpr {
     }
 
     fn descriptor_static() -> ::protobuf::reflect::MessageDescriptor {
-        ::protobuf::reflect::MessageDescriptor::new_generated_2(file_descriptor(), 13)
+        ::protobuf::reflect::MessageDescriptor::new_generated_2(file_descriptor(), 12)
     }
 
     fn default_instance() -> &'static CallExpr {
@@ -2473,7 +2461,7 @@ impl ::protobuf::Message for Expr {
     }
 
     fn descriptor_static() -> ::protobuf::reflect::MessageDescriptor {
-        ::protobuf::reflect::MessageDescriptor::new_generated_2(file_descriptor(), 14)
+        ::protobuf::reflect::MessageDescriptor::new_generated_2(file_descriptor(), 13)
     }
 
     fn default_instance() -> &'static Expr {
@@ -2653,7 +2641,7 @@ impl ::protobuf::Message for Module {
     }
 
     fn descriptor_static() -> ::protobuf::reflect::MessageDescriptor {
-        ::protobuf::reflect::MessageDescriptor::new_generated_2(file_descriptor(), 15)
+        ::protobuf::reflect::MessageDescriptor::new_generated_2(file_descriptor(), 14)
     }
 
     fn default_instance() -> &'static Module {
@@ -2681,60 +2669,57 @@ impl ::protobuf::reflect::ProtobufValue for Module {
 }
 
 static file_descriptor_proto_data: &'static [u8] = b"\
-    \n\x17OpenControllerLib.proto\x12\x05model\"\xd4\x02\n\tHouseExpr\x12.\n\
+    \n\x17OpenControllerLib.proto\x12\x05model\"\xd2\x01\n\tHouseExpr\x12.\n\
     \x0cdisplay_name\x18\x01\x20\x02(\x0b2\x0b.model.ExprR\x0bdisplayName\
     \x12\x1b\n\x02id\x18\x02\x20\x02(\x0b2\x0b.model.ExprR\x02id\x121\n\x05r\
-    ooms\x18\x03\x20\x03(\x0b2\x1b.model.HouseExpr.RoomsEntryR\x05rooms\x127\
-    \n\x07devices\x18\x04\x20\x03(\x0b2\x1d.model.HouseExpr.DevicesEntryR\
-    \x07devices\x1aE\n\nRoomsEntry\x12\x10\n\x03key\x18\x01\x20\x01(\tR\x03k\
+    ooms\x18\x03\x20\x03(\x0b2\x1b.model.HouseExpr.RoomsEntryR\x05rooms\x1aE\
+    \n\nRoomsEntry\x12\x10\n\x03key\x18\x01\x20\x01(\tR\x03key\x12!\n\x05val\
+    ue\x18\x02\x20\x01(\x0b2\x0b.model.ExprR\x05value:\x028\x01\"\xec\x01\n\
+    \x08RoomExpr\x12.\n\x0cdisplay_name\x18\x01\x20\x02(\x0b2\x0b.model.Expr\
+    R\x0bdisplayName\x12B\n\x0bcontrollers\x18\x02\x20\x03(\x0b2\x20.model.R\
+    oomExpr.ControllersEntryR\x0bcontrollers\x12\x1f\n\x04icon\x18\x03\x20\
+    \x01(\x0b2\x0b.model.ExprR\x04icon\x1aK\n\x10ControllersEntry\x12\x10\n\
+    \x03key\x18\x01\x20\x01(\tR\x03key\x12!\n\x05value\x18\x02\x20\x01(\x0b2\
+    \x0b.model.ExprR\x05value:\x028\x01\"\xa8\x01\n\x0eControllerExpr\x12.\n\
+    \x0cdisplay_name\x18\x01\x20\x02(\x0b2\x0b.model.ExprR\x0bdisplayName\
+    \x12,\n\x0bbrand_color\x18\x02\x20\x01(\x0b2\x0b.model.ExprR\nbrandColor\
+    \x128\n\x11display_interface\x18\x03\x20\x01(\x0b2\x0b.model.ExprR\x10di\
+    splayInterface\"=\n\x14DisplayInterfaceExpr\x12%\n\x07widgets\x18\x01\
+    \x20\x03(\x0b2\x0b.model.ExprR\x07widgets\"\x8f\x01\n\nDeviceExpr\x128\n\
+    \x07lambdas\x18\x01\x20\x03(\x0b2\x1e.model.DeviceExpr.LambdasEntryR\x07\
+    lambdas\x1aG\n\x0cLambdasEntry\x12\x10\n\x03key\x18\x01\x20\x01(\tR\x03k\
     ey\x12!\n\x05value\x18\x02\x20\x01(\x0b2\x0b.model.ExprR\x05value:\x028\
-    \x01\x1aG\n\x0cDevicesEntry\x12\x10\n\x03key\x18\x01\x20\x01(\tR\x03key\
+    \x01\"\xed\x01\n\nWidgetExpr\x12\x16\n\x06expand\x18\x01\x20\x01(\x08R\
+    \x06expand\x12\x1f\n\x0bwidget_type\x18\x02\x20\x02(\tR\nwidgetType\x125\
+    \n\x06params\x18\x03\x20\x03(\x0b2\x1d.model.WidgetExpr.ParamsEntryR\x06\
+    params\x12'\n\x08children\x18\x04\x20\x03(\x0b2\x0b.model.ExprR\x08child\
+    ren\x1aF\n\x0bParamsEntry\x12\x10\n\x03key\x18\x01\x20\x01(\tR\x03key\
     \x12!\n\x05value\x18\x02\x20\x01(\x0b2\x0b.model.ExprR\x05value:\x028\
-    \x01\"\xec\x01\n\x08RoomExpr\x12.\n\x0cdisplay_name\x18\x01\x20\x02(\x0b\
-    2\x0b.model.ExprR\x0bdisplayName\x12B\n\x0bcontrollers\x18\x02\x20\x03(\
-    \x0b2\x20.model.RoomExpr.ControllersEntryR\x0bcontrollers\x12\x1f\n\x04i\
-    con\x18\x03\x20\x01(\x0b2\x0b.model.ExprR\x04icon\x1aK\n\x10ControllersE\
-    ntry\x12\x10\n\x03key\x18\x01\x20\x01(\tR\x03key\x12!\n\x05value\x18\x02\
-    \x20\x01(\x0b2\x0b.model.ExprR\x05value:\x028\x01\"\xa8\x01\n\x0eControl\
-    lerExpr\x12.\n\x0cdisplay_name\x18\x01\x20\x02(\x0b2\x0b.model.ExprR\x0b\
-    displayName\x12,\n\x0bbrand_color\x18\x02\x20\x01(\x0b2\x0b.model.ExprR\
-    \nbrandColor\x128\n\x11display_interface\x18\x03\x20\x01(\x0b2\x0b.model\
-    .ExprR\x10displayInterface\"=\n\x14DisplayInterfaceExpr\x12%\n\x07widget\
-    s\x18\x01\x20\x03(\x0b2\x0b.model.ExprR\x07widgets\"\x8f\x01\n\nDeviceEx\
-    pr\x128\n\x07lambdas\x18\x01\x20\x03(\x0b2\x1e.model.DeviceExpr.LambdasE\
-    ntryR\x07lambdas\x1aG\n\x0cLambdasEntry\x12\x10\n\x03key\x18\x01\x20\x01\
-    (\tR\x03key\x12!\n\x05value\x18\x02\x20\x01(\x0b2\x0b.model.ExprR\x05val\
-    ue:\x028\x01\"\xed\x01\n\nWidgetExpr\x12\x16\n\x06expand\x18\x01\x20\x01\
-    (\x08R\x06expand\x12\x1f\n\x0bwidget_type\x18\x02\x20\x02(\tR\nwidgetTyp\
-    e\x125\n\x06params\x18\x03\x20\x03(\x0b2\x1d.model.WidgetExpr.ParamsEntr\
-    yR\x06params\x12'\n\x08children\x18\x04\x20\x03(\x0b2\x0b.model.ExprR\
-    \x08children\x1aF\n\x0bParamsEntry\x12\x10\n\x03key\x18\x01\x20\x01(\tR\
-    \x03key\x12!\n\x05value\x18\x02\x20\x01(\x0b2\x0b.model.ExprR\x05value:\
-    \x028\x01\"\x1b\n\x07RefExpr\x12\x10\n\x03ref\x18\x01\x20\x02(\tR\x03ref\
-    \"E\n\nLambdaExpr\x12\x12\n\x04args\x18\x01\x20\x03(\tR\x04args\x12#\n\
-    \x06return\x18\x02\x20\x02(\x0b2\x0b.model.ExprR\x06return\"R\n\x08CallE\
-    xpr\x12%\n\x07calling\x18\x01\x20\x02(\x0b2\x0b.model.ExprR\x07calling\
-    \x12\x1f\n\x04args\x18\x02\x20\x03(\x0b2\x0b.model.ExprR\x04args\"\xaf\
-    \x04\n\x04Expr\x12\"\n\x03ref\x18\x01\x20\x01(\x0b2\x0e.model.RefExprH\0\
-    R\x03ref\x12+\n\x06lambda\x18\x02\x20\x01(\x0b2\x11.model.LambdaExprH\0R\
-    \x06lambda\x12%\n\x04call\x18\x03\x20\x01(\x0b2\x0f.model.CallExprH\0R\
-    \x04call\x12\x18\n\x06string\x18\x04\x20\x01(\tH\0R\x06string\x12\x16\n\
-    \x05int64\x18\x05\x20\x01(\x03H\0R\x05int64\x12\x16\n\x05int32\x18\x06\
-    \x20\x01(\x05H\0R\x05int32\x12\x16\n\x05float\x18\x07\x20\x01(\x02H\0R\
-    \x05float\x12\x14\n\x04bool\x18\x08\x20\x01(\x08H\0R\x04bool\x12(\n\x05h\
-    ouse\x18\t\x20\x01(\x0b2\x10.model.HouseExprH\0R\x05house\x12%\n\x04room\
-    \x18\n\x20\x01(\x0b2\x0f.model.RoomExprH\0R\x04room\x127\n\ncontroller\
-    \x18\x0b\x20\x01(\x0b2\x15.model.ControllerExprH\0R\ncontroller\x12J\n\
-    \x11display_interface\x18\x0c\x20\x01(\x0b2\x1b.model.DisplayInterfaceEx\
-    prH\0R\x10displayInterface\x12+\n\x06device\x18\r\x20\x01(\x0b2\x11.mode\
-    l.DeviceExprH\0R\x06device\x12+\n\x06widget\x18\x0e\x20\x01(\x0b2\x11.mo\
-    del.WidgetExprH\0R\x06widgetB\x07\n\x05inner\"\xaa\x01\n\x06Module\x124\
-    \n\x07imports\x18\x01\x20\x03(\x0b2\x1a.model.Module.ImportsEntryR\x07im\
-    ports\x12\x1f\n\x04body\x18\x02\x20\x02(\x0b2\x0b.model.ExprR\x04body\
-    \x1aI\n\x0cImportsEntry\x12\x10\n\x03key\x18\x01\x20\x01(\tR\x03key\x12#\
-    \n\x05value\x18\x02\x20\x01(\x0b2\r.model.ModuleR\x05value:\x028\x01BR\n\
-    &com.pjtsearch.opencontroller_lib_protoP\x01Z&pjtsearch.com/opencontroll\
-    er_lib_proto\
+    \x01\"\x1b\n\x07RefExpr\x12\x10\n\x03ref\x18\x01\x20\x02(\tR\x03ref\"E\n\
+    \nLambdaExpr\x12\x12\n\x04args\x18\x01\x20\x03(\tR\x04args\x12#\n\x06ret\
+    urn\x18\x02\x20\x02(\x0b2\x0b.model.ExprR\x06return\"R\n\x08CallExpr\x12\
+    %\n\x07calling\x18\x01\x20\x02(\x0b2\x0b.model.ExprR\x07calling\x12\x1f\
+    \n\x04args\x18\x02\x20\x03(\x0b2\x0b.model.ExprR\x04args\"\xaf\x04\n\x04\
+    Expr\x12\"\n\x03ref\x18\x01\x20\x01(\x0b2\x0e.model.RefExprH\0R\x03ref\
+    \x12+\n\x06lambda\x18\x02\x20\x01(\x0b2\x11.model.LambdaExprH\0R\x06lamb\
+    da\x12%\n\x04call\x18\x03\x20\x01(\x0b2\x0f.model.CallExprH\0R\x04call\
+    \x12\x18\n\x06string\x18\x04\x20\x01(\tH\0R\x06string\x12\x16\n\x05int64\
+    \x18\x05\x20\x01(\x03H\0R\x05int64\x12\x16\n\x05int32\x18\x06\x20\x01(\
+    \x05H\0R\x05int32\x12\x16\n\x05float\x18\x07\x20\x01(\x02H\0R\x05float\
+    \x12\x14\n\x04bool\x18\x08\x20\x01(\x08H\0R\x04bool\x12(\n\x05house\x18\
+    \t\x20\x01(\x0b2\x10.model.HouseExprH\0R\x05house\x12%\n\x04room\x18\n\
+    \x20\x01(\x0b2\x0f.model.RoomExprH\0R\x04room\x127\n\ncontroller\x18\x0b\
+    \x20\x01(\x0b2\x15.model.ControllerExprH\0R\ncontroller\x12J\n\x11displa\
+    y_interface\x18\x0c\x20\x01(\x0b2\x1b.model.DisplayInterfaceExprH\0R\x10\
+    displayInterface\x12+\n\x06device\x18\r\x20\x01(\x0b2\x11.model.DeviceEx\
+    prH\0R\x06device\x12+\n\x06widget\x18\x0e\x20\x01(\x0b2\x11.model.Widget\
+    ExprH\0R\x06widgetB\x07\n\x05inner\"\xaa\x01\n\x06Module\x124\n\x07impor\
+    ts\x18\x01\x20\x03(\x0b2\x1a.model.Module.ImportsEntryR\x07imports\x12\
+    \x1f\n\x04body\x18\x02\x20\x02(\x0b2\x0b.model.ExprR\x04body\x1aI\n\x0cI\
+    mportsEntry\x12\x10\n\x03key\x18\x01\x20\x01(\tR\x03key\x12#\n\x05value\
+    \x18\x02\x20\x01(\x0b2\r.model.ModuleR\x05value:\x028\x01BR\n&com.pjtsea\
+    rch.opencontroller_lib_protoP\x01Z&pjtsearch.com/opencontroller_lib_prot\
+    o\
 ";
 
 /// `FileDescriptorProto` object which was a source for this generated file

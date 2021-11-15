@@ -129,7 +129,6 @@ fn parse_expr(rule: Pair<Rule>) -> Expr {
             let mut house = HouseExpr::new();
             house.id = Some(params.get("id").cloned().unwrap().0.unwrap()).into();
             house.display_name = Some(params.get("displayName").cloned().unwrap().0.unwrap()).into();
-            house.devices = params.get("devices").cloned().unwrap().1.unwrap();
             house.rooms = params.get("rooms").cloned().unwrap().1.unwrap();
             expr.set_house(house);
         },
