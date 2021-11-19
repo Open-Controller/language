@@ -24,24 +24,24 @@ map_pair = { "@" ~ ident ~ expr }
 map = { "{" ~ (map_pair)? ~ (map_pair)* ~ "}"}
 list = { "[" ~ (expr)? ~ (expr)* ~ "]"}
 
-xml_param = { ident ~ "=" ~ expr }
+xml_param = { ident ~ "=" ~ (("{" ~ expr ~ "}") | string) }
 widget = { "<" ~ ident ~ (xml_param)* ~ ">" ~ (widget | "{" ~ expr ~ "}")* ~ "</" ~ ident ~ ">" }
 
-struct_param = { ":" ~ ident ~ (expr | map | list) }
+struct_param = { ident ~ (expr | map | list) }
 
-house = { "(" ~ "defhouse" ~ (struct_param)+ ~ ")" }
-room = { "(" ~ "defroom" ~ (struct_param)+ ~ ")" }
-controller = { "(" ~ "defcontroller" ~ (struct_param)+ ~ ")" }
-display_interface = { "(" ~ "defdisplayinterface" ~ (struct_param)+ ~ ")" }
-device = { "(" ~ "defdevice" ~ (struct_param)+ ~ ")" }
+house = { "house" ~ "{" ~ (struct_param)+ ~ "}" }
+room = { "room" ~ "{" ~ (struct_param)+ ~ "}" }
+controller = { "controller" ~ "{" ~ (struct_param)+ ~ "}" }
+display_interface = { "displayInterface" ~ "{" ~ (struct_param)+ ~ "}" }
+device = { "device" ~ "{" ~ (struct_param)+ ~ "}" }
 
 ident = @{ (char)+ | "+" | "-" | "*" | "/" | "%" | "$" | "=" | "!" | ">" | "<" }
 ref_expr = @{ ident }
 lambda_args = { (ident)? ~ ("," ~ ident)* }
-lambda = { "(" ~ "lambda" ~ "(" ~ lambda_args ~ ")" ~ expr ~ ")" }
+lambda = { "(" ~ lambda_args ~ ")" ~ "=>" ~ expr }
 get_lambda_expr = { ref_expr | device | if_expr | call }
 get_lambda = { get_lambda_expr ~ "." ~ ident }
-if_expr = { "(" ~ "if" ~ expr  ~ expr ~ expr ~ ")" }
+if_expr = { "if" ~ expr ~ "{" ~ expr ~ "}" ~ "else" ~ "{" ~ expr ~ "}" }
 call = { "(" ~ (expr)+ ~ ")" }
 
 expr = { widget | string | float | int | bool | lambda | house | room | controller | display_interface | device | get_lambda | if_expr | call | ref_expr }

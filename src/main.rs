@@ -58,8 +58,19 @@ fn parse_widget(rule: Pair<Rule>) -> WidgetExpr {
     } {
         let mut xml_param_inner = widget_inner.next().unwrap().into_inner();
         let key = xml_param_inner.next().unwrap().as_str();
-        let val = parse_expr(xml_param_inner.next().unwrap());
-        widget.params.insert(key.to_owned(), val);
+        let inner = xml_param_inner.next().unwrap();
+        match inner.as_rule() {
+            Rule::expr => {
+                let val = parse_expr(inner);
+                widget.params.insert(key.to_owned(), val);
+            }
+            Rule::string => {
+                let mut val = Expr::new();
+                val.set_string(trim_string(inner.as_str()).to_owned());
+                widget.params.insert(key.to_owned(), val);
+            }
+            _ => unreachable!()
+        }
     }
     while match widget_inner.peek().unwrap().as_rule() {
         Rule::expr => true,
