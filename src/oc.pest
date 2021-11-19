@@ -21,8 +21,8 @@ float = @{
 bool = @{ "true" | "false" }
 
 map_pair = { "@" ~ ident ~ expr }
-map = { "{" ~ (map_pair)? ~ ("," ~ map_pair)* ~ "}"}
-list = { "[" ~ (expr)? ~ ("," ~ expr)* ~ "]"}
+map = { "{" ~ (map_pair)? ~ (map_pair)* ~ "}"}
+list = { "[" ~ (expr)? ~ (expr)* ~ "]"}
 
 xml_param = { ident ~ "=" ~ expr }
 widget = { "<" ~ ident ~ (xml_param)* ~ ">" ~ (widget | "{" ~ expr ~ "}")* ~ "</" ~ ident ~ ">" }
