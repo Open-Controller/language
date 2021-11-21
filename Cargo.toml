@@ -9,6 +9,7 @@ edition = "2018"
 pest = "2.0"
 pest_derive = "2.0"
 protobuf = { git = "https://github.com/stepancheg/rust-protobuf.git" }
+anyhow = "1.0.45"
 
 [build-dependencies]
 protobuf-codegen = { git = "https://github.com/stepancheg/rust-protobuf.git" }
