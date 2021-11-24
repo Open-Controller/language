@@ -772,7 +772,6 @@ impl ::protobuf::reflect::ProtobufValue for DeviceExpr {
 #[derive(PartialEq,Clone,Default)]
 pub struct WidgetExpr {
     // message fields
-    expand: ::std::option::Option<bool>,
     widget_type: ::std::option::Option<::std::string::String>,
     pub params: ::std::collections::HashMap<::std::string::String, Expr>,
     pub children: ::std::vec::Vec<Expr>,
@@ -790,25 +789,6 @@ impl<'a> ::std::default::Default for &'a WidgetExpr {
 impl WidgetExpr {
     pub fn new() -> WidgetExpr {
         ::std::default::Default::default()
-    }
-
-    // optional bool expand = 1;
-
-    pub fn get_expand(&self) -> bool {
-        self.expand.unwrap_or(false)
-    }
-
-    pub fn clear_expand(&mut self) {
-        self.expand = ::std::option::Option::None;
-    }
-
-    pub fn has_expand(&self) -> bool {
-        self.expand.is_some()
-    }
-
-    // Param is passed by value, moved
-    pub fn set_expand(&mut self, v: bool) {
-        self.expand = ::std::option::Option::Some(v);
     }
 
     // required string widget_type = 2;
@@ -849,12 +829,6 @@ impl WidgetExpr {
 
     fn generated_message_descriptor_data() -> ::protobuf::reflect::GeneratedMessageDescriptorData {
         let mut fields = ::std::vec::Vec::new();
-        fields.push(::protobuf::reflect::rt::v2::make_option_get_copy_simpler_accessor::<_, _>(
-            "expand",
-            |m: &WidgetExpr| { &m.expand },
-            |m: &mut WidgetExpr| { &mut m.expand },
-            WidgetExpr::get_expand,
-        ));
         fields.push(::protobuf::reflect::rt::v2::make_option_get_ref_simpler_accessor::<_, _>(
             "widget_type",
             |m: &WidgetExpr| { &m.widget_type },
@@ -896,12 +870,6 @@ impl ::protobuf::Message for WidgetExpr {
         while !is.eof()? {
             let (field_number, wire_type) = is.read_tag_unpack()?;
             match field_number {
-                1 => {
-                    if wire_type != ::protobuf::wire_format::WireTypeVarint {
-                        return ::std::result::Result::Err(::protobuf::rt::unexpected_wire_type(wire_type));
-                    }
-                    self.expand = ::std::option::Option::Some(is.read_bool()?);
-                },
                 2 => {
                     if wire_type != ::protobuf::wire_format::WireTypeLengthDelimited {
                         return ::std::result::Result::Err(::protobuf::rt::unexpected_wire_type(wire_type));
@@ -926,9 +894,6 @@ impl ::protobuf::Message for WidgetExpr {
     #[allow(unused_variables)]
     fn compute_size(&self) -> u32 {
         let mut my_size = 0;
-        if let Some(v) = self.expand {
-            my_size += 2;
-        }
         if let Some(v) = self.widget_type.as_ref() {
             my_size += ::protobuf::rt::string_size(2, &v);
         }
@@ -943,9 +908,6 @@ impl ::protobuf::Message for WidgetExpr {
     }
 
     fn write_to_with_cached_sizes(&self, os: &mut ::protobuf::CodedOutputStream<'_>) -> ::protobuf::ProtobufResult<()> {
-        if let Some(v) = self.expand {
-            os.write_bool(1, v)?;
-        }
         if let Some(v) = self.widget_type.as_ref() {
             os.write_string(2, v)?;
         }
@@ -985,7 +947,6 @@ impl ::protobuf::Message for WidgetExpr {
 
 impl ::protobuf::Clear for WidgetExpr {
     fn clear(&mut self) {
-        self.expand = ::std::option::Option::None;
         self.widget_type = ::std::option::Option::None;
         self.params.clear();
         self.children.clear();
@@ -2689,37 +2650,36 @@ static file_descriptor_proto_data: &'static [u8] = b"\
     \x07lambdas\x18\x01\x20\x03(\x0b2\x1e.model.DeviceExpr.LambdasEntryR\x07\
     lambdas\x1aG\n\x0cLambdasEntry\x12\x10\n\x03key\x18\x01\x20\x01(\tR\x03k\
     ey\x12!\n\x05value\x18\x02\x20\x01(\x0b2\x0b.model.ExprR\x05value:\x028\
-    \x01\"\xed\x01\n\nWidgetExpr\x12\x16\n\x06expand\x18\x01\x20\x01(\x08R\
-    \x06expand\x12\x1f\n\x0bwidget_type\x18\x02\x20\x02(\tR\nwidgetType\x125\
-    \n\x06params\x18\x03\x20\x03(\x0b2\x1d.model.WidgetExpr.ParamsEntryR\x06\
-    params\x12'\n\x08children\x18\x04\x20\x03(\x0b2\x0b.model.ExprR\x08child\
-    ren\x1aF\n\x0bParamsEntry\x12\x10\n\x03key\x18\x01\x20\x01(\tR\x03key\
-    \x12!\n\x05value\x18\x02\x20\x01(\x0b2\x0b.model.ExprR\x05value:\x028\
-    \x01\"\x1b\n\x07RefExpr\x12\x10\n\x03ref\x18\x01\x20\x02(\tR\x03ref\"E\n\
-    \nLambdaExpr\x12\x12\n\x04args\x18\x01\x20\x03(\tR\x04args\x12#\n\x06ret\
-    urn\x18\x02\x20\x02(\x0b2\x0b.model.ExprR\x06return\"R\n\x08CallExpr\x12\
-    %\n\x07calling\x18\x01\x20\x02(\x0b2\x0b.model.ExprR\x07calling\x12\x1f\
-    \n\x04args\x18\x02\x20\x03(\x0b2\x0b.model.ExprR\x04args\"\xaf\x04\n\x04\
-    Expr\x12\"\n\x03ref\x18\x01\x20\x01(\x0b2\x0e.model.RefExprH\0R\x03ref\
-    \x12+\n\x06lambda\x18\x02\x20\x01(\x0b2\x11.model.LambdaExprH\0R\x06lamb\
-    da\x12%\n\x04call\x18\x03\x20\x01(\x0b2\x0f.model.CallExprH\0R\x04call\
-    \x12\x18\n\x06string\x18\x04\x20\x01(\tH\0R\x06string\x12\x16\n\x05int64\
-    \x18\x05\x20\x01(\x03H\0R\x05int64\x12\x16\n\x05int32\x18\x06\x20\x01(\
-    \x05H\0R\x05int32\x12\x16\n\x05float\x18\x07\x20\x01(\x02H\0R\x05float\
-    \x12\x14\n\x04bool\x18\x08\x20\x01(\x08H\0R\x04bool\x12(\n\x05house\x18\
-    \t\x20\x01(\x0b2\x10.model.HouseExprH\0R\x05house\x12%\n\x04room\x18\n\
-    \x20\x01(\x0b2\x0f.model.RoomExprH\0R\x04room\x127\n\ncontroller\x18\x0b\
-    \x20\x01(\x0b2\x15.model.ControllerExprH\0R\ncontroller\x12J\n\x11displa\
-    y_interface\x18\x0c\x20\x01(\x0b2\x1b.model.DisplayInterfaceExprH\0R\x10\
-    displayInterface\x12+\n\x06device\x18\r\x20\x01(\x0b2\x11.model.DeviceEx\
-    prH\0R\x06device\x12+\n\x06widget\x18\x0e\x20\x01(\x0b2\x11.model.Widget\
-    ExprH\0R\x06widgetB\x07\n\x05inner\"\xaa\x01\n\x06Module\x124\n\x07impor\
-    ts\x18\x01\x20\x03(\x0b2\x1a.model.Module.ImportsEntryR\x07imports\x12\
-    \x1f\n\x04body\x18\x02\x20\x02(\x0b2\x0b.model.ExprR\x04body\x1aI\n\x0cI\
-    mportsEntry\x12\x10\n\x03key\x18\x01\x20\x01(\tR\x03key\x12#\n\x05value\
-    \x18\x02\x20\x01(\x0b2\r.model.ModuleR\x05value:\x028\x01BR\n&com.pjtsea\
-    rch.opencontroller_lib_protoP\x01Z&pjtsearch.com/opencontroller_lib_prot\
-    o\
+    \x01\"\xd5\x01\n\nWidgetExpr\x12\x1f\n\x0bwidget_type\x18\x02\x20\x02(\t\
+    R\nwidgetType\x125\n\x06params\x18\x03\x20\x03(\x0b2\x1d.model.WidgetExp\
+    r.ParamsEntryR\x06params\x12'\n\x08children\x18\x04\x20\x03(\x0b2\x0b.mo\
+    del.ExprR\x08children\x1aF\n\x0bParamsEntry\x12\x10\n\x03key\x18\x01\x20\
+    \x01(\tR\x03key\x12!\n\x05value\x18\x02\x20\x01(\x0b2\x0b.model.ExprR\
+    \x05value:\x028\x01\"\x1b\n\x07RefExpr\x12\x10\n\x03ref\x18\x01\x20\x02(\
+    \tR\x03ref\"E\n\nLambdaExpr\x12\x12\n\x04args\x18\x01\x20\x03(\tR\x04arg\
+    s\x12#\n\x06return\x18\x02\x20\x02(\x0b2\x0b.model.ExprR\x06return\"R\n\
+    \x08CallExpr\x12%\n\x07calling\x18\x01\x20\x02(\x0b2\x0b.model.ExprR\x07\
+    calling\x12\x1f\n\x04args\x18\x02\x20\x03(\x0b2\x0b.model.ExprR\x04args\
+    \"\xaf\x04\n\x04Expr\x12\"\n\x03ref\x18\x01\x20\x01(\x0b2\x0e.model.RefE\
+    xprH\0R\x03ref\x12+\n\x06lambda\x18\x02\x20\x01(\x0b2\x11.model.LambdaEx\
+    prH\0R\x06lambda\x12%\n\x04call\x18\x03\x20\x01(\x0b2\x0f.model.CallExpr\
+    H\0R\x04call\x12\x18\n\x06string\x18\x04\x20\x01(\tH\0R\x06string\x12\
+    \x16\n\x05int64\x18\x05\x20\x01(\x03H\0R\x05int64\x12\x16\n\x05int32\x18\
+    \x06\x20\x01(\x05H\0R\x05int32\x12\x16\n\x05float\x18\x07\x20\x01(\x02H\
+    \0R\x05float\x12\x14\n\x04bool\x18\x08\x20\x01(\x08H\0R\x04bool\x12(\n\
+    \x05house\x18\t\x20\x01(\x0b2\x10.model.HouseExprH\0R\x05house\x12%\n\
+    \x04room\x18\n\x20\x01(\x0b2\x0f.model.RoomExprH\0R\x04room\x127\n\ncont\
+    roller\x18\x0b\x20\x01(\x0b2\x15.model.ControllerExprH\0R\ncontroller\
+    \x12J\n\x11display_interface\x18\x0c\x20\x01(\x0b2\x1b.model.DisplayInte\
+    rfaceExprH\0R\x10displayInterface\x12+\n\x06device\x18\r\x20\x01(\x0b2\
+    \x11.model.DeviceExprH\0R\x06device\x12+\n\x06widget\x18\x0e\x20\x01(\
+    \x0b2\x11.model.WidgetExprH\0R\x06widgetB\x07\n\x05inner\"\xaa\x01\n\x06\
+    Module\x124\n\x07imports\x18\x01\x20\x03(\x0b2\x1a.model.Module.ImportsE\
+    ntryR\x07imports\x12\x1f\n\x04body\x18\x02\x20\x02(\x0b2\x0b.model.ExprR\
+    \x04body\x1aI\n\x0cImportsEntry\x12\x10\n\x03key\x18\x01\x20\x01(\tR\x03\
+    key\x12#\n\x05value\x18\x02\x20\x01(\x0b2\r.model.ModuleR\x05value:\x028\
+    \x01BR\n&com.pjtsearch.opencontroller_lib_protoP\x01Z&pjtsearch.com/open\
+    controller_lib_proto\
 ";
 
 /// `FileDescriptorProto` object which was a source for this generated file
