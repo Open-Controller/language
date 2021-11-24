@@ -41,7 +41,8 @@ lambda_args = { (ident)? ~ ("," ~ ident)* }
 lambda = { "(" ~ lambda_args ~ ")" ~ "=>" ~ expr }
 get_lambda_expr = { ref_expr | device | if_expr | call }
 get_lambda = { get_lambda_expr ~ "." ~ ident }
-if_expr = { "if" ~ expr ~ "{" ~ expr ~ "}" ~ "else" ~ "{" ~ expr ~ "}" }
+elif_expr = { "elif" ~ expr ~ "{" ~ expr ~ "}" }
+if_expr = { "if" ~ expr ~ "{" ~ expr ~ "}" ~ (elif_expr)* ~ "else" ~ "{" ~ expr ~ "}" }
 call = { "(" ~ (expr)+ ~ ")" }
 
 expr = { widget | string | float | int | bool | lambda | house | room | controller | display_interface | device | get_lambda | if_expr | call | ref_expr }

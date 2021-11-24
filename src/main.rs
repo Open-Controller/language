@@ -16,8 +16,8 @@ use protobuf::Message;
 use OpenControllerLib::Expr;
 
 use crate::OpenControllerLib::{
-    CallExpr, ControllerExpr, DeviceExpr, DisplayInterfaceExpr, HouseExpr, LambdaExpr, Module,
-    RefExpr, RoomExpr, WidgetExpr,
+    CallExpr, ControllerExpr, DeviceExpr, DisplayInterfaceExpr, HouseExpr, IfExpr, LambdaExpr,
+    Module, RefExpr, RoomExpr, WidgetExpr, Elif,
 };
 
 pub trait PositionalError<T> {
@@ -416,7 +416,40 @@ fn parse_expr(rule: Pair<Rule>) -> Result<Expr> {
             }
             expr.set_call(call);
         }
-        Rule::if_expr => todo!(),
+        Rule::if_expr => {
+            let mut if_expr = IfExpr::new();
+            let mut if_inner = expr_inner.clone().into_inner();
+            if_expr.condition = Some(parse_expr(
+                if_inner.next().pos_err("Expected condition", &expr_inner)?,
+            )?)
+            .into();
+            if_expr.then = Some(parse_expr(
+                if_inner.next().pos_err("Expected then", &expr_inner)?,
+            )?)
+            .into();
+            while let Rule::elif_expr = if_inner
+                .peek()
+                .pos_err("Expected something in if", &expr_inner)?
+                .as_rule() {
+                let mut elif = Elif::new();
+                let mut elif_inner = if_inner.next().pos_err("Expected elif", &expr_inner)?.into_inner();
+                elif.condition = Some(parse_expr(
+                    elif_inner.next().pos_err("Expected condition", &expr_inner)?,
+                )?)
+                .into();
+                elif.then = Some(parse_expr(
+                    elif_inner.next().pos_err("Expected then", &expr_inner)?,
+                )?)
+                .into();
+                if_expr.elif.push(elif);
+            }
+            if_expr.field_else = Some(parse_expr(
+                if_inner.next().pos_err("Expected else", &expr_inner)?,
+            )?)
+            .into();
+
+            expr.set_field_if(if_expr);
+        }
         _ => unreachable!(),
     }
     Ok(expr)
