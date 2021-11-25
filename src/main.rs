@@ -450,6 +450,26 @@ fn parse_expr(rule: Pair<Rule>) -> Result<Expr> {
 
             expr.set_field_if(if_expr);
         }
+        Rule::index => {
+            let mut index = CallExpr::new();
+            let mut index_ref_expr = Expr::new();
+            let mut index_ref = RefExpr::new();
+            index_ref.set_field_ref("index".to_string());
+            index_ref_expr.set_field_ref(index_ref);
+            index.calling = Some(index_ref_expr).into();
+
+            let mut index_inner = expr_inner.clone().into_inner();
+            let input = parse_expr(
+                index_inner
+                    .next()
+                    .pos_err("Expected index input", &expr_inner)?,
+            )?;
+            index.args.push(input);
+            for path in index_inner {
+                index.args.push(parse_expr(path)?);
+            }
+            expr.set_call(index);
+        }
         _ => unreachable!(),
     }
     Ok(expr)
