@@ -10,6 +10,10 @@ pest = "2.0"
 pest_derive = "2.0"
 protobuf = { git = "https://github.com/stepancheg/rust-protobuf.git" }
 anyhow = "1.0.45"
+clap = "2.33.3"
+structopt = "0.3.21"
+env_logger = "0.8.3"
+log = "0.4.0"
 
 [build-dependencies]
 protobuf-codegen = { git = "https://github.com/stepancheg/rust-protobuf.git" }
