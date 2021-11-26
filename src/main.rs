@@ -10,6 +10,7 @@ use anyhow::{Context, Result};
 use log::{debug, LevelFilter};
 use parser::parse_module;
 use protobuf::Message;
+use relative_path::RelativePathBuf;
 use structopt::StructOpt;
 
 #[derive(Debug, StructOpt)]
@@ -35,10 +36,10 @@ fn main() -> Result<()> {
     env_logger::builder()
         .filter_level(LevelFilter::from_str(&opts.verbosity)?)
         .init();
-    debug!("{:#?}", parse_module(&opts.input)?);
+    debug!("{:#?}", parse_module(&opts.input.canonicalize()?)?);
     fs::write(
         &opts.output,
-        parse_module(&opts.input)?
+        parse_module(&opts.input.canonicalize()?)?
             .write_to_bytes()
             .context("Couldn't convert to bytes")?,
     )

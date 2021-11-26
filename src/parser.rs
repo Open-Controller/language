@@ -1,11 +1,17 @@
-use std::{collections::HashMap, fs, path::{Path, PathBuf}};
+use std::{
+    collections::HashMap,
+    fs,
+    path::Path,
+};
 
 use anyhow::{Context, Result};
+use log::info;
 use pest::{
     error::{Error, ErrorVariant},
     iterators::Pair,
     Parser,
 };
+use relative_path::RelativePathBuf;
 
 use crate::OpenControllerLib::{
     CallExpr, ControllerExpr, DeviceExpr, DisplayInterfaceExpr, Elif, Expr, HouseExpr, IfExpr,
@@ -68,7 +74,8 @@ pub fn parse_module<P>(input_file: P) -> Result<Module>
 where
     P: AsRef<Path>,
 {
-    let unparsed_file = fs::read_to_string(input_file).context("Couldn't read file")?;
+    info!("Parsing module {:#?}", input_file.as_ref().canonicalize()?);
+    let unparsed_file = fs::read_to_string(&input_file).context("Couldn't read file")?;
     let file = OCParser::parse(Rule::module, &unparsed_file)
         .context("Couldn't parse")? // unwrap the parse result
         .next()
@@ -80,9 +87,13 @@ where
                 let mut inner_rules = line.clone().into_inner();
                 let path = inner_rules.next().pos_err("Expected path", &line)?.as_str();
                 let name = inner_rules.next().pos_err("Expected name", &line)?.as_str();
-                module
-                    .imports
-                    .insert(name.to_owned(), parse_module(PathBuf::from(trim_string(path)))?);
+                module.imports.insert(
+                    name.to_owned(),
+                    parse_module(
+                        RelativePathBuf::from(trim_string(path))
+                            .to_path(input_file.as_ref().parent().context("Input file needs parent")?),
+                    )?,
+                );
             }
             Rule::expr => {
                 module.body = Some(parse_expr(line)?).into();
