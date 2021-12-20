@@ -2,6 +2,8 @@
 
 A compiler for OpenController house specifications.
 
+## [Example Usage](test/example)
+
 ## Development
 
 1. Clone the repository
@@ -12,6 +14,10 @@ A compiler for OpenController house specifications.
 2. Run with an ocdef file
 
         cargo run ./test.ocdef ./result.ocbin
+
+3. Run tests
+
+        cargo test
 
 ## Installation
 
@@ -38,4 +44,3 @@ A compiler for OpenController house specifications.
     ARGS:
         <input>     Sets the input file to use
         <output>    Sets the output file to use
-
