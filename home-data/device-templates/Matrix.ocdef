@@ -1,0 +1,9 @@
+(host, port) =>
+    device { 
+        lambdas {
+            @set (output, input) => (std.tcpRequest
+                (+ host (+ ":" port))
+                (+ output input)
+            )
+        }
+    }

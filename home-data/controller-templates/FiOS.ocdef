@@ -1,0 +1,247 @@
+(name, fios, tv, matrix, matrixOutput, matrixInput, audioReceiver, audioReceiverZone, audioReceiverOutput) =>
+    controller {
+        displayName name
+        brandColor "#ff8880"
+        displayInterface displayInterface {
+            widgets [
+                <row>
+                    <row>
+                        <button
+                            onClick={() => (pipe ""
+                                () => (fios.key2)
+                                () => (delay 200)
+                                () => (fios.key6)
+                                () => (delay 200)
+                                () => (fios.key5)
+                            )}
+                            text="HGTV"
+                            icon="HOME"
+                            size={1}
+                        ></button>
+                        <button
+                            onClick={fios.dvr}
+                            text="DVR"
+                            icon="DVR"
+                            size={1}
+                        ></button>
+                    </row>
+                    <row>
+                        <button
+                            onClick={() => (pipe ""
+                                fios.off
+                                () => (audioReceiver.off audioReceiverZone)
+                                tv.off
+                            )}
+                            text="Off"
+                            icon="OFF"
+                            size={1}
+                        ></button>
+                        <button
+                            onClick={() => (pipe ""
+                                tv.on
+                                () => (delay 200)
+                                () => (matrix.set matrixOutput matrixInput)
+                                () => (delay 200)
+                                () => (audioReceiver.on audioReceiverZone)
+                                () => (delay 200)
+                                () => (audioReceiver.set audioReceiverZone audioReceiverOutput)
+                                () => (delay 200)
+                                () => (audioReceiver.volumeSet audioReceiverZone)
+                                fios.on
+                            )}
+                            text="On"
+                            icon="ON"
+                            size={1}
+                        ></button>
+                    </row>
+                </row>
+                <swipepad
+                    expand={true}
+                    onSwipeUp={fios.up}
+                    onSwipeDown={fios.down}
+                    onSwipeLeft={fios.left}
+                    onSwipeRight={fios.right}
+                    onClick={fios.select}
+                    onBottomIncrease={() =>
+                        (audioReceiver.volumeUp audioReceiverZone)
+                    }
+                    onBottomDecrease={() =>
+                        (audioReceiver.volumeDown audioReceiverZone)
+                    }
+                    onBottomClick={() =>
+                        (audioReceiver.volumeMute audioReceiverZone)
+                    }
+                    bottomIncreaseIcon="VOLUME_UP"
+                    bottomDecreaseIcon="VOLUME_DOWN"
+                ></swipepad>
+                <row>
+                    <column>
+                        <button
+                            onClick={fios.previous}
+                            text="Skip Reverse"
+                            icon="SKIP_REVERSE"
+                            size={1}
+                        ></button>
+                        <button
+                            onClick={fios.exit}
+                            text="Exit"
+                            icon="EXIT"
+                            size={1}
+                        ></button>
+                    </column>
+                    <button
+                        onClick={fios.pause}
+                        text="Play"
+                        icon="PLAY"
+                        size={2}
+                    ></button>
+                    <column>
+                        <button
+                            onClick={fios.next}
+                            text="Skip Forward"
+                            icon="SKIP_FORWARD"
+                            size={1}
+                        ></button>
+                        <menubutton
+                            text="Menu"
+                            icon="MENU_ALT"
+                            size={1}
+                        >
+                            <row>
+                                <button
+                                    onClick={fios.record}
+                                    text="Record"
+                                    icon="RECORD"
+                                ></button>
+                                <column>
+                                    <row>
+                                        <button
+                                            onClick={fios.rewind}
+                                            text="Reverse"
+                                            icon="REVERSE"
+                                        ></button>
+                                        <button
+                                            onClick={fios.stop}
+                                            text="stop"
+                                            icon="STOP"
+                                        ></button>
+                                        <button
+                                            onClick={fios.forward}
+                                            text="Forward"
+                                            icon="FORWARD"
+                                        ></button>
+                                    </row>
+                                </column>
+                                <button
+                                    onClick={fios.delete}
+                                    text="Delete"
+                                    icon="REMOVE"
+                                ></button>
+                            </row>
+                            <row>
+                                <column>
+                                    <button
+                                        onClick={fios.menu}
+                                        text="Menu"
+                                        icon="MENU"
+                                    ></button>
+                                    <button
+                                        onClick={fios.options}
+                                        text="Options"
+                                        icon="OPTIONS"
+                                    ></button>
+                                    <button
+                                        onClick={fios.channelUp}
+                                        text="Channel Up"
+                                        icon="CHANNEL_UP"
+                                    ></button>
+                                    <button
+                                        onClick={fios.channelDown}
+                                        text="Channel Down"
+                                        icon="CHANNEL_DOWN"
+                                    ></button>
+                                </column>
+                                <column>
+                                    <row>
+                                        <button
+                                            onClick={fios.key1}
+                                            text="1"
+                                        ></button>
+                                        <button
+                                            onClick={fios.key2}
+                                            text="2"
+                                        ></button>
+                                        <button
+                                            onClick={fios.key3}
+                                            text="3"
+                                        ></button>
+                                    </row>
+                                    <row>
+                                        <button
+                                            onClick={fios.key4}
+                                            text="4"
+                                        ></button>
+                                        <button
+                                            onClick={fios.key5}
+                                            text="5"
+                                        ></button>
+                                        <button
+                                            onClick={fios.key6}
+                                            text="6"
+                                        ></button>
+                                    </row>
+                                    <row>
+                                        <button
+                                            onClick={fios.key7}
+                                            text="7"
+                                        ></button>
+                                        <button
+                                            onClick={fios.key8}
+                                            text="8"
+                                        ></button>
+                                        <button
+                                            onClick={fios.key9}
+                                            text="9"
+                                        ></button>
+                                    </row>
+                                    <row>
+                                        <button
+                                            onClick={fios.closedCaptions}
+                                            text="Closed Captions"
+                                            icon="CLOSED_CAPTIONS"
+                                        ></button>
+                                        <button
+                                            onClick={fios.key0}
+                                            text="0"
+                                        ></button>
+                                        <button
+                                            onClick={fios.pound}
+                                            text="Pound"
+                                            icon="POUND"
+                                        ></button>
+                                    </row>
+                                </column>
+                                <column>
+                                    <button
+                                        onClick={fios.info}
+                                        text="Info"
+                                        icon="INFO"
+                                    ></button>
+                                    <button
+                                        onClick={fios.guide}
+                                        text="Guide"
+                                        icon="GUIDE"
+                                    ></button>
+                                    <button
+                                        onClick={fios.last}
+                                        text="Last"
+                                        icon="BACK"
+                                    ></button>
+                                </column>
+                            </row>
+                        </menubutton>
+                    </column>
+                </row>
+            ]
+        }
+    }

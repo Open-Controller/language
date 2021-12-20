@@ -50,3 +50,47 @@ fn main() -> Result<()> {
     .context("Failed to write")?;
     Ok(())
 }
+
+#[cfg(test)]
+mod tests {
+    use assert_cmd::prelude::*;
+    use predicates::prelude::*;
+    use protobuf::Message;
+    use std::{fs, process::Command, time::Duration, thread::sleep};
+
+    use crate::OpenControllerLib::Module;
+
+    #[test]
+    fn file_doesnt_exist() -> Result<(), Box<dyn std::error::Error>> {
+        let mut cmd = Command::cargo_bin("language")?;
+
+        cmd.arg("./test/file/doesnt/exist");
+        cmd.arg("./output.ocbin");
+        cmd.assert()
+            .failure()
+            .stderr(predicate::str::contains("No such file or directory"));
+
+        Ok(())
+    }
+
+    #[test]
+    fn compiles_to_correct_data() -> Result<(), Box<dyn std::error::Error>> {
+        let mut cmd = Command::cargo_bin("language")?;
+
+        cmd.arg("./test/example/home.ocdef");
+        cmd.arg("/tmp/output.ocbin");
+        let mut child = cmd.spawn()?;
+        
+        sleep(Duration::from_millis(300));
+
+        let bytes = Module::parse_from_bytes(&fs::read("/tmp/output.ocbin")?)?;
+        child.kill()?;
+
+        // println!("{}", bytes);
+
+        assert_eq!(bytes, Module::parse_from_bytes(&fs::read("./test/example/expected.ocbin")?)?);
+        // println!("{}", fs::read("./test/example/expected.ocbin")?);
+
+        Ok(())
+    }
+}

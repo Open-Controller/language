@@ -1,0 +1,13 @@
+import "../../device-templates/AudioReceiver.ocdef" as audioReceiver
+import "../../device-templates/Matrix.ocdef" as matrix
+import "../../device-templates/TV.ocdef" as tv
+import "../../device-templates/Roku.ocdef" as roku
+import "../../device-templates/FiOS.ocdef" as fios
+
+(mapOf
+    (pair "centralRoku" (roku "http://192.168.20.105:8060"))
+    (pair "nookTV" (tv "192.168.20.62" 4998 "1:1"))
+    (pair "centralMatrix" (matrix "192.168.20.66" 4999))
+    (pair "centralAudioReceiver" (audioReceiver "192.168.20.30" 23))
+    (pair "centralFiOS" (fios "192.168.20.60" 4998 "1:1"))
+)

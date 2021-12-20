@@ -1,0 +1,6 @@
+(base) =>
+    device {
+        lambdas {
+            @keypress (key) => (std.httpRequest (+ base (+ "/keypress/" key)) "POST")
+        }
+    }
