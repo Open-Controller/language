@@ -6,25 +6,26 @@ room {
     displayName "Nook"
     icon "NOOK"
     controllers {
+        
         @nookRoku (roku 
             "Nook Roku"
-            devices["centralRoku"]
-            devices["nookTV"]
-            devices["centralMatrix"]
+            (unwrap devices["centralRoku"])
+            (unwrap devices["nookTV"])
+            (unwrap devices["centralMatrix"])
             "1"
             "2"
-            devices["centralAudioReceiver"]
+            (unwrap devices["centralAudioReceiver"])
             "2"
             "DVD"
         )
         @nookFiOS (fios
             "Nook FiOS"
-            devices["centralFiOS"]
-            devices["nookTV"]
-            devices["centralMatrix"]
+            (unwrap devices["centralFiOS"])
+            (unwrap devices["nookTV"])
+            (unwrap devices["centralMatrix"])
             "1"
             "1"
-            devices["centralAudioReceiver"]
+            (unwrap devices["centralAudioReceiver"])
             "2"
             "Cable"
         )
