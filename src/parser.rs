@@ -1,7 +1,7 @@
 use std::{
     collections::HashMap,
     fs,
-    path::Path,
+    path::Path, convert::TryInto,
 };
 
 use anyhow::{Context, Result};
@@ -15,7 +15,7 @@ use relative_path::RelativePathBuf;
 
 use crate::OpenControllerLib::{
     CallExpr, ControllerExpr, DeviceExpr, DisplayInterfaceExpr, Elif, Expr, HouseExpr, IfExpr,
-    LambdaExpr, Module, RefExpr, RoomExpr, WidgetExpr,
+    LambdaExpr, Module, RefExpr, RoomExpr, WidgetExpr, Position,
 };
 
 /// A trait for to convert to a pest error
@@ -106,6 +106,7 @@ where
                 );
             }
             Rule::expr => {
+                // TODO: If already body
                 module.body = Some(parse_expr(line)?).into();
             }
             // Do nothing at end of file
@@ -264,10 +265,16 @@ fn parse_struct_params(
 /// Parses an expression from a rule
 fn parse_expr(rule: Pair<Rule>) -> Result<Expr> {
     let expr_inner = rule
+        .clone()
         .into_inner()
         .next()
         .context("Expected expression inner")?;
     let mut expr = Expr::new();
+    let mut pos = Position::new();
+    let code_pos = rule.as_span().start_pos().line_col();
+    pos.set_line(code_pos.0.try_into()?);
+    pos.set_column(code_pos.1.try_into()?);
+    expr.position = Some(pos).into();
     match expr_inner.as_rule() {
         Rule::string => expr.set_string(trim_string(expr_inner.as_str()).to_owned()),
         Rule::int => expr.set_int32(expr_inner.as_str().parse().unwrap()),
