@@ -107,7 +107,7 @@ where
             }
             Rule::expr => {
                 // TODO: If already body
-                module.body = Some(parse_expr(line)?).into();
+                module.body = Some(parse_expr(line, input_file.as_ref().canonicalize()?.to_string_lossy().to_string())?).into();
             }
             // Do nothing at end of file
             Rule::EOI => (),
@@ -118,7 +118,7 @@ where
 }
 
 /// Parses a widget rule
-fn parse_widget(rule: Pair<Rule>) -> Result<WidgetExpr> {
+fn parse_widget(rule: Pair<Rule>, file: String) -> Result<WidgetExpr> {
     let mut widget = WidgetExpr::new();
     let mut widget_inner = rule.clone().into_inner();
     // Get widget tag
@@ -147,7 +147,7 @@ fn parse_widget(rule: Pair<Rule>) -> Result<WidgetExpr> {
         let inner = xml_param_inner.next().pos_err("Expected value", &rule)?;
         match inner.as_rule() {
             Rule::expr => {
-                let val = parse_expr(inner)?;
+                let val = parse_expr(inner, file.clone())?;
                 widget.params.insert(key.to_owned(), val);
             }
             Rule::string => {
@@ -170,7 +170,7 @@ fn parse_widget(rule: Pair<Rule>) -> Result<WidgetExpr> {
     } {
         widget
             .children
-            .push(parse_expr(widget_inner.next().unwrap())?);
+            .push(parse_expr(widget_inner.next().unwrap(), file.clone())?);
     }
     // Get widget children
     while match widget_inner
@@ -186,6 +186,7 @@ fn parse_widget(rule: Pair<Rule>) -> Result<WidgetExpr> {
             widget_inner
                 .next()
                 .pos_err("Expected child widget", &rule)?,
+                file.clone()
         )?);
         widget.children.push(expr);
     }
@@ -195,6 +196,7 @@ fn parse_widget(rule: Pair<Rule>) -> Result<WidgetExpr> {
 /// Parse struct parameters
 fn parse_struct_params(
     rule: Pair<Rule>,
+    file: String
 ) -> Result<
     HashMap<
         &str,
@@ -224,6 +226,7 @@ fn parse_struct_params(
                             param_inner
                                 .next()
                                 .pos_err("Expected param expr value", &param)?,
+                                file.clone()
                         )?),
                         None,
                         None,
@@ -240,7 +243,7 @@ fn parse_struct_params(
                 {
                     let mut pair_inner = pair.clone().into_inner();
                     let key = pair_inner.next().pos_err("Expected key", &pair)?.as_str();
-                    let val = parse_expr(pair_inner.next().context("Expected value")?)?;
+                    let val = parse_expr(pair_inner.next().context("Expected value")?, file.clone())?;
                     inner_map.insert(key.to_owned(), val);
                 }
                 map.insert(key, (None, Some(inner_map), None));
@@ -252,7 +255,7 @@ fn parse_struct_params(
                     .pos_err("Expected list items", &param)?
                     .into_inner()
                 {
-                    inner_vec.push(parse_expr(pair)?);
+                    inner_vec.push(parse_expr(pair, file.clone())?);
                 }
                 map.insert(key, (None, None, Some(inner_vec)));
             }
@@ -263,7 +266,7 @@ fn parse_struct_params(
 }
 
 /// Parses an expression from a rule
-fn parse_expr(rule: Pair<Rule>) -> Result<Expr> {
+fn parse_expr(rule: Pair<Rule>, file: String) -> Result<Expr>{
     let expr_inner = rule
         .clone()
         .into_inner()
@@ -274,6 +277,7 @@ fn parse_expr(rule: Pair<Rule>) -> Result<Expr> {
     let code_pos = rule.as_span().start_pos().line_col();
     pos.set_line(code_pos.0.try_into()?);
     pos.set_column(code_pos.1.try_into()?);
+    pos.set_file(file.clone());
     expr.position = Some(pos).into();
     match expr_inner.as_rule() {
         Rule::string => expr.set_string(trim_string(expr_inner.as_str()).to_owned()),
@@ -284,10 +288,10 @@ fn parse_expr(rule: Pair<Rule>) -> Result<Expr> {
             "false" => expr.set_bool(false),
             _ => unreachable!(),
         },
-        Rule::widget => expr.set_widget(parse_widget(expr_inner)?),
+        Rule::widget => expr.set_widget(parse_widget(expr_inner, file)?),
         Rule::house => {
             // Get parse params
-            let params = parse_struct_params(expr_inner.clone())?;
+            let params = parse_struct_params(expr_inner.clone(), file)?;
             let mut house = HouseExpr::new();
             house.id = Some(
                 params
@@ -317,7 +321,7 @@ fn parse_expr(rule: Pair<Rule>) -> Result<Expr> {
         }
         Rule::room => {
             // Get parse params
-            let params = parse_struct_params(expr_inner.clone())?;
+            let params = parse_struct_params(expr_inner.clone(), file)?;
             let mut room = RoomExpr::new();
             room.icon = Some(
                 params
@@ -347,7 +351,7 @@ fn parse_expr(rule: Pair<Rule>) -> Result<Expr> {
         }
         Rule::controller => {
             // Get parse params
-            let params = parse_struct_params(expr_inner.clone())?;
+            let params = parse_struct_params(expr_inner.clone(), file)?;
             let mut controller = ControllerExpr::new();
             controller.brand_color = Some(
                 params
@@ -380,7 +384,7 @@ fn parse_expr(rule: Pair<Rule>) -> Result<Expr> {
         }
         Rule::display_interface => {
             // Get parse params
-            let params = parse_struct_params(expr_inner.clone())?;
+            let params = parse_struct_params(expr_inner.clone(), file)?;
             let mut display_interface = DisplayInterfaceExpr::new();
             display_interface.widgets = params
                 .get("widgets")
@@ -393,7 +397,7 @@ fn parse_expr(rule: Pair<Rule>) -> Result<Expr> {
         }
         Rule::device => {
             // Get parse params
-            let params = parse_struct_params(expr_inner.clone())?;
+            let params = parse_struct_params(expr_inner.clone(), file)?;
             let mut device = DeviceExpr::new();
             device.lambdas = params
                 .get("lambdas")
@@ -418,7 +422,7 @@ fn parse_expr(rule: Pair<Rule>) -> Result<Expr> {
             for arg in lambda_args {
                 lambda.args.push(arg.as_str().to_owned());
             }
-            let body = parse_expr(lambda_inner.next().pos_err("Expected body", &expr_inner)?)?;
+            let body = parse_expr(lambda_inner.next().pos_err("Expected body", &expr_inner)?, file)?;
             lambda.field_return = Some(body).into();
             expr.set_lambda(lambda);
         }
@@ -439,6 +443,7 @@ fn parse_expr(rule: Pair<Rule>) -> Result<Expr> {
                 get_lambda_inner
                     .next()
                     .pos_err("Expected getLambda base", &expr_inner)?,
+                    file
             )?;
             let mut path_expr = Expr::new();
             let path = get_lambda_inner
@@ -456,10 +461,11 @@ fn parse_expr(rule: Pair<Rule>) -> Result<Expr> {
             let mut call_inner = expr_inner.clone().into_inner();
             call.calling = Some(parse_expr(
                 call_inner.next().pos_err("Expected calling", &expr_inner)?,
+                file.clone()
             )?)
             .into();
             for arg in call_inner {
-                call.args.push(parse_expr(arg)?);
+                call.args.push(parse_expr(arg, file.clone())?);
             }
             expr.set_call(call);
         }
@@ -469,10 +475,12 @@ fn parse_expr(rule: Pair<Rule>) -> Result<Expr> {
             // Get if then
             if_expr.condition = Some(parse_expr(
                 if_inner.next().pos_err("Expected condition", &expr_inner)?,
+                file.clone()
             )?)
             .into();
             if_expr.then = Some(parse_expr(
                 if_inner.next().pos_err("Expected then", &expr_inner)?,
+                file.clone()
             )?)
             .into();
             // Get elifs
@@ -490,10 +498,12 @@ fn parse_expr(rule: Pair<Rule>) -> Result<Expr> {
                     elif_inner
                         .next()
                         .pos_err("Expected condition", &expr_inner)?,
+                        file.clone()
                 )?)
                 .into();
                 elif.then = Some(parse_expr(
                     elif_inner.next().pos_err("Expected then", &expr_inner)?,
+                    file.clone()
                 )?)
                 .into();
                 if_expr.elif.push(elif);
@@ -501,6 +511,7 @@ fn parse_expr(rule: Pair<Rule>) -> Result<Expr> {
             // Get final else
             if_expr.field_else = Some(parse_expr(
                 if_inner.next().pos_err("Expected else", &expr_inner)?,
+                file
             )?)
             .into();
 
@@ -522,10 +533,11 @@ fn parse_expr(rule: Pair<Rule>) -> Result<Expr> {
                 index_inner
                     .next()
                     .pos_err("Expected index input", &expr_inner)?,
+                    file.clone()
             )?;
             index.args.push(input);
             for path in index_inner {
-                index.args.push(parse_expr(path)?);
+                index.args.push(parse_expr(path, file.clone())?);
             }
             expr.set_call(index);
         }

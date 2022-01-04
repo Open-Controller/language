@@ -1797,6 +1797,7 @@ impl ::protobuf::reflect::ProtobufValue for IfExpr {
 #[derive(PartialEq,Clone,Default)]
 pub struct Position {
     // message fields
+    file: ::std::option::Option<::std::string::String>,
     line: ::std::option::Option<i32>,
     column: ::std::option::Option<i32>,
     // special fields
@@ -1815,7 +1816,43 @@ impl Position {
         ::std::default::Default::default()
     }
 
-    // required int32 line = 1;
+    // required string file = 1;
+
+    pub fn get_file(&self) -> &str {
+        match self.file.as_ref() {
+            Some(v) => v,
+            None => "",
+        }
+    }
+
+    pub fn clear_file(&mut self) {
+        self.file = ::std::option::Option::None;
+    }
+
+    pub fn has_file(&self) -> bool {
+        self.file.is_some()
+    }
+
+    // Param is passed by value, moved
+    pub fn set_file(&mut self, v: ::std::string::String) {
+        self.file = ::std::option::Option::Some(v);
+    }
+
+    // Mutable pointer to the field.
+    // If field is not initialized, it is initialized with default value first.
+    pub fn mut_file(&mut self) -> &mut ::std::string::String {
+        if self.file.is_none() {
+            self.file = ::std::option::Option::Some(::std::string::String::new());
+        }
+        self.file.as_mut().unwrap()
+    }
+
+    // Take field
+    pub fn take_file(&mut self) -> ::std::string::String {
+        self.file.take().unwrap_or_else(|| ::std::string::String::new())
+    }
+
+    // required int32 line = 2;
 
     pub fn get_line(&self) -> i32 {
         self.line.unwrap_or(0)
@@ -1834,7 +1871,7 @@ impl Position {
         self.line = ::std::option::Option::Some(v);
     }
 
-    // required int32 column = 2;
+    // required int32 column = 3;
 
     pub fn get_column(&self) -> i32 {
         self.column.unwrap_or(0)
@@ -1855,6 +1892,12 @@ impl Position {
 
     fn generated_message_descriptor_data() -> ::protobuf::reflect::GeneratedMessageDescriptorData {
         let mut fields = ::std::vec::Vec::new();
+        fields.push(::protobuf::reflect::rt::v2::make_option_get_ref_simpler_accessor::<_, _>(
+            "file",
+            |m: &Position| { &m.file },
+            |m: &mut Position| { &mut m.file },
+            Position::get_file,
+        ));
         fields.push(::protobuf::reflect::rt::v2::make_option_get_copy_simpler_accessor::<_, _>(
             "line",
             |m: &Position| { &m.line },
@@ -1877,6 +1920,9 @@ impl Position {
 
 impl ::protobuf::Message for Position {
     fn is_initialized(&self) -> bool {
+        if self.file.is_none() {
+            return false;
+        }
         if self.line.is_none() {
             return false;
         }
@@ -1891,12 +1937,18 @@ impl ::protobuf::Message for Position {
             let (field_number, wire_type) = is.read_tag_unpack()?;
             match field_number {
                 1 => {
+                    if wire_type != ::protobuf::wire_format::WireTypeLengthDelimited {
+                        return ::std::result::Result::Err(::protobuf::rt::unexpected_wire_type(wire_type));
+                    }
+                    self.file = ::std::option::Option::Some(is.read_string()?);
+                },
+                2 => {
                     if wire_type != ::protobuf::wire_format::WireTypeVarint {
                         return ::std::result::Result::Err(::protobuf::rt::unexpected_wire_type(wire_type));
                     }
                     self.line = ::std::option::Option::Some(is.read_int32()?);
                 },
-                2 => {
+                3 => {
                     if wire_type != ::protobuf::wire_format::WireTypeVarint {
                         return ::std::result::Result::Err(::protobuf::rt::unexpected_wire_type(wire_type));
                     }
@@ -1914,11 +1966,14 @@ impl ::protobuf::Message for Position {
     #[allow(unused_variables)]
     fn compute_size(&self) -> u32 {
         let mut my_size = 0;
+        if let Some(v) = self.file.as_ref() {
+            my_size += ::protobuf::rt::string_size(1, &v);
+        }
         if let Some(v) = self.line {
-            my_size += ::protobuf::rt::value_size(1, v, ::protobuf::wire_format::WireTypeVarint);
+            my_size += ::protobuf::rt::value_size(2, v, ::protobuf::wire_format::WireTypeVarint);
         }
         if let Some(v) = self.column {
-            my_size += ::protobuf::rt::value_size(2, v, ::protobuf::wire_format::WireTypeVarint);
+            my_size += ::protobuf::rt::value_size(3, v, ::protobuf::wire_format::WireTypeVarint);
         }
         my_size += ::protobuf::rt::unknown_fields_size(self.get_unknown_fields());
         self.cached_size.set(my_size);
@@ -1926,11 +1981,14 @@ impl ::protobuf::Message for Position {
     }
 
     fn write_to_with_cached_sizes(&self, os: &mut ::protobuf::CodedOutputStream<'_>) -> ::protobuf::ProtobufResult<()> {
+        if let Some(v) = self.file.as_ref() {
+            os.write_string(1, v)?;
+        }
         if let Some(v) = self.line {
-            os.write_int32(1, v)?;
+            os.write_int32(2, v)?;
         }
         if let Some(v) = self.column {
-            os.write_int32(2, v)?;
+            os.write_int32(3, v)?;
         }
         os.write_unknown_fields(self.get_unknown_fields())?;
         ::std::result::Result::Ok(())
@@ -1958,6 +2016,7 @@ impl ::protobuf::Message for Position {
 
     fn default_instance() -> &'static Position {
         static instance: Position = Position {
+            file: ::std::option::Option::None,
             line: ::std::option::Option::None,
             column: ::std::option::Option::None,
             unknown_fields: ::protobuf::UnknownFields::new(),
@@ -1969,6 +2028,7 @@ impl ::protobuf::Message for Position {
 
 impl ::protobuf::Clear for Position {
     fn clear(&mut self) {
+        self.file = ::std::option::Option::None;
         self.line = ::std::option::Option::None;
         self.column = ::std::option::Option::None;
         self.unknown_fields.clear();
@@ -3319,30 +3379,31 @@ static file_descriptor_proto_data: &'static [u8] = b"\
     \"\x96\x01\n\x06IfExpr\x12)\n\tcondition\x18\x01\x20\x02(\x0b2\x0b.model\
     .ExprR\tcondition\x12\x1f\n\x04then\x18\x02\x20\x02(\x0b2\x0b.model.Expr\
     R\x04then\x12\x1f\n\x04elif\x18\x03\x20\x03(\x0b2\x0b.model.ElifR\x04eli\
-    f\x12\x1f\n\x04else\x18\x04\x20\x02(\x0b2\x0b.model.ExprR\x04else\"6\n\
-    \x08Position\x12\x12\n\x04line\x18\x01\x20\x02(\x05R\x04line\x12\x16\n\
-    \x06column\x18\x02\x20\x02(\x05R\x06column\"\xfd\x04\n\x04Expr\x12+\n\
-    \x08position\x18\x01\x20\x01(\x0b2\x0f.model.PositionR\x08position\x12\"\
-    \n\x03ref\x18\x02\x20\x01(\x0b2\x0e.model.RefExprH\0R\x03ref\x12+\n\x06l\
-    ambda\x18\x03\x20\x01(\x0b2\x11.model.LambdaExprH\0R\x06lambda\x12%\n\
-    \x04call\x18\x04\x20\x01(\x0b2\x0f.model.CallExprH\0R\x04call\x12\x18\n\
-    \x06string\x18\x05\x20\x01(\tH\0R\x06string\x12\x16\n\x05int64\x18\x06\
-    \x20\x01(\x03H\0R\x05int64\x12\x16\n\x05int32\x18\x07\x20\x01(\x05H\0R\
-    \x05int32\x12\x16\n\x05float\x18\x08\x20\x01(\x02H\0R\x05float\x12\x14\n\
-    \x04bool\x18\t\x20\x01(\x08H\0R\x04bool\x12(\n\x05house\x18\n\x20\x01(\
-    \x0b2\x10.model.HouseExprH\0R\x05house\x12%\n\x04room\x18\x0b\x20\x01(\
-    \x0b2\x0f.model.RoomExprH\0R\x04room\x127\n\ncontroller\x18\x0c\x20\x01(\
-    \x0b2\x15.model.ControllerExprH\0R\ncontroller\x12J\n\x11display_interfa\
-    ce\x18\r\x20\x01(\x0b2\x1b.model.DisplayInterfaceExprH\0R\x10displayInte\
-    rface\x12+\n\x06device\x18\x0e\x20\x01(\x0b2\x11.model.DeviceExprH\0R\
-    \x06device\x12+\n\x06widget\x18\x0f\x20\x01(\x0b2\x11.model.WidgetExprH\
-    \0R\x06widget\x12\x1f\n\x02if\x18\x10\x20\x01(\x0b2\r.model.IfExprH\0R\
-    \x02ifB\x07\n\x05inner\"\xaa\x01\n\x06Module\x124\n\x07imports\x18\x01\
-    \x20\x03(\x0b2\x1a.model.Module.ImportsEntryR\x07imports\x12\x1f\n\x04bo\
-    dy\x18\x02\x20\x02(\x0b2\x0b.model.ExprR\x04body\x1aI\n\x0cImportsEntry\
-    \x12\x10\n\x03key\x18\x01\x20\x01(\tR\x03key\x12#\n\x05value\x18\x02\x20\
-    \x01(\x0b2\r.model.ModuleR\x05value:\x028\x01BR\n&com.pjtsearch.opencont\
-    roller_lib_protoP\x01Z&pjtsearch.com/opencontroller_lib_proto\
+    f\x12\x1f\n\x04else\x18\x04\x20\x02(\x0b2\x0b.model.ExprR\x04else\"J\n\
+    \x08Position\x12\x12\n\x04file\x18\x01\x20\x02(\tR\x04file\x12\x12\n\x04\
+    line\x18\x02\x20\x02(\x05R\x04line\x12\x16\n\x06column\x18\x03\x20\x02(\
+    \x05R\x06column\"\xfd\x04\n\x04Expr\x12+\n\x08position\x18\x01\x20\x01(\
+    \x0b2\x0f.model.PositionR\x08position\x12\"\n\x03ref\x18\x02\x20\x01(\
+    \x0b2\x0e.model.RefExprH\0R\x03ref\x12+\n\x06lambda\x18\x03\x20\x01(\x0b\
+    2\x11.model.LambdaExprH\0R\x06lambda\x12%\n\x04call\x18\x04\x20\x01(\x0b\
+    2\x0f.model.CallExprH\0R\x04call\x12\x18\n\x06string\x18\x05\x20\x01(\tH\
+    \0R\x06string\x12\x16\n\x05int64\x18\x06\x20\x01(\x03H\0R\x05int64\x12\
+    \x16\n\x05int32\x18\x07\x20\x01(\x05H\0R\x05int32\x12\x16\n\x05float\x18\
+    \x08\x20\x01(\x02H\0R\x05float\x12\x14\n\x04bool\x18\t\x20\x01(\x08H\0R\
+    \x04bool\x12(\n\x05house\x18\n\x20\x01(\x0b2\x10.model.HouseExprH\0R\x05\
+    house\x12%\n\x04room\x18\x0b\x20\x01(\x0b2\x0f.model.RoomExprH\0R\x04roo\
+    m\x127\n\ncontroller\x18\x0c\x20\x01(\x0b2\x15.model.ControllerExprH\0R\
+    \ncontroller\x12J\n\x11display_interface\x18\r\x20\x01(\x0b2\x1b.model.D\
+    isplayInterfaceExprH\0R\x10displayInterface\x12+\n\x06device\x18\x0e\x20\
+    \x01(\x0b2\x11.model.DeviceExprH\0R\x06device\x12+\n\x06widget\x18\x0f\
+    \x20\x01(\x0b2\x11.model.WidgetExprH\0R\x06widget\x12\x1f\n\x02if\x18\
+    \x10\x20\x01(\x0b2\r.model.IfExprH\0R\x02ifB\x07\n\x05inner\"\xaa\x01\n\
+    \x06Module\x124\n\x07imports\x18\x01\x20\x03(\x0b2\x1a.model.Module.Impo\
+    rtsEntryR\x07imports\x12\x1f\n\x04body\x18\x02\x20\x02(\x0b2\x0b.model.E\
+    xprR\x04body\x1aI\n\x0cImportsEntry\x12\x10\n\x03key\x18\x01\x20\x01(\tR\
+    \x03key\x12#\n\x05value\x18\x02\x20\x01(\x0b2\r.model.ModuleR\x05value:\
+    \x028\x01BR\n&com.pjtsearch.opencontroller_lib_protoP\x01Z&pjtsearch.com\
+    /opencontroller_lib_proto\
 ";
 
 /// `FileDescriptorProto` object which was a source for this generated file
