@@ -76,9 +76,9 @@ fn trim_string(value: &str) -> &str {
 }
 
 /// Parses a module file
-pub fn parse_module<P>(input_file: P) -> Result<Module>
+pub fn parse_module<P>(input_file: P, root_dir: P) -> Result<Module>
 where
-    P: AsRef<Path>,
+    P: AsRef<Path> + Clone,
 {
     info!("Parsing module {:#?}", input_file.as_ref().canonicalize()?);
     // Load file
@@ -102,12 +102,13 @@ where
                     parse_module(
                         RelativePathBuf::from(trim_string(path))
                             .to_path(input_file.as_ref().parent().context("Input file needs parent")?),
+                            root_dir.as_ref().to_path_buf()
                     )?,
                 );
             }
             Rule::expr => {
                 // TODO: If already body
-                module.body = Some(parse_expr(line, input_file.as_ref().canonicalize()?.to_string_lossy().to_string())?).into();
+                module.body = Some(parse_expr(line, input_file.as_ref().canonicalize()?.strip_prefix(root_dir.clone().as_ref().canonicalize()?)?.to_string_lossy().to_string())?).into();
             }
             // Do nothing at end of file
             Rule::EOI => (),

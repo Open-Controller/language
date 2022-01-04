@@ -5,12 +5,11 @@ extern crate pest_derive;
 mod OpenControllerLib;
 mod parser;
 
-use std::{fs, path::PathBuf, str::FromStr};
 use anyhow::{Context, Result};
 use log::{debug, LevelFilter};
 use parser::parse_module;
 use protobuf::Message;
-use relative_path::RelativePathBuf;
+use std::{fs, path::PathBuf, str::FromStr};
 use structopt::StructOpt;
 
 /// CLI options
@@ -31,7 +30,11 @@ struct Opts {
     output: PathBuf,
 
     /// The level of verbosity
-    #[structopt(short = "v", help = "Sets the level of verbosity", default_value = "INFO")]
+    #[structopt(
+        short = "v",
+        help = "Sets the level of verbosity",
+        default_value = "INFO"
+    )]
     verbosity: String,
 }
 
@@ -40,12 +43,29 @@ fn main() -> Result<()> {
     env_logger::builder()
         .filter_level(LevelFilter::from_str(&opts.verbosity)?)
         .init();
-    debug!("{:#?}", parse_module(&opts.input.canonicalize()?)?);
+    debug!(
+        "{:#?}",
+        parse_module(
+            &opts.input.canonicalize()?,
+            &opts
+                .input
+                .parent()
+                .context("No parent folder")?
+                .to_path_buf()
+        )?
+    );
     fs::write(
         &opts.output,
-        parse_module(&opts.input.canonicalize()?)?
-            .write_to_bytes()
-            .context("Couldn't convert to bytes")?,
+        parse_module(
+            &opts.input.canonicalize()?,
+            &opts
+                .input
+                .parent()
+                .context("No parent folder")?
+                .to_path_buf(),
+        )?
+        .write_to_bytes()
+        .context("Couldn't convert to bytes")?,
     )
     .context("Failed to write")?;
     Ok(())
@@ -56,7 +76,7 @@ mod tests {
     use assert_cmd::prelude::*;
     use predicates::prelude::*;
     use protobuf::Message;
-    use std::{fs, process::Command, time::Duration, thread::sleep};
+    use std::{fs, process::Command, thread::sleep, time::Duration};
 
     use crate::OpenControllerLib::Module;
 
@@ -80,7 +100,7 @@ mod tests {
         cmd.arg("./test/example/home.ocdef");
         cmd.arg("/tmp/output.ocbin");
         let mut child = cmd.spawn()?;
-        
+
         sleep(Duration::from_millis(300));
 
         let bytes = Module::parse_from_bytes(&fs::read("/tmp/output.ocbin")?)?;
@@ -88,7 +108,10 @@ mod tests {
 
         // println!("{}", bytes);
 
-        assert_eq!(bytes, Module::parse_from_bytes(&fs::read("./test/example/expected.ocbin")?)?);
+        assert_eq!(
+            bytes,
+            Module::parse_from_bytes(&fs::read("./test/example/expected.ocbin")?)?
+        );
         // println!("{}", fs::read("./test/example/expected.ocbin")?);
 
         Ok(())
