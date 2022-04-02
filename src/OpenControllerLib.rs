@@ -30,7 +30,7 @@ pub struct HouseExpr {
     // message fields
     pub display_name: ::protobuf::MessageField<Expr>,
     pub id: ::protobuf::MessageField<Expr>,
-    pub rooms: ::std::collections::HashMap<::std::string::String, Expr>,
+    pub rooms: ::std::vec::Vec<Expr>,
     // special fields
     pub unknown_fields: ::protobuf::UnknownFields,
     pub cached_size: ::protobuf::rt::CachedSize,
@@ -59,7 +59,7 @@ impl HouseExpr {
             |m: &HouseExpr| { &m.id },
             |m: &mut HouseExpr| { &mut m.id },
         ));
-        fields.push(::protobuf::reflect::rt::v2::make_map_simpler_accessor::<_, _, _>(
+        fields.push(::protobuf::reflect::rt::v2::make_vec_simpler_accessor::<_, _>(
             "rooms",
             |m: &HouseExpr| { &m.rooms },
             |m: &mut HouseExpr| { &mut m.rooms },
@@ -90,6 +90,11 @@ impl ::protobuf::Message for HouseExpr {
                 return false;
             }
         };
+        for v in &self.rooms {
+            if !v.is_initialized() {
+                return false;
+            }
+        };
         true
     }
 
@@ -104,7 +109,7 @@ impl ::protobuf::Message for HouseExpr {
                     ::protobuf::rt::read_singular_message_into_field(wire_type, is, &mut self.id)?;
                 },
                 3 => {
-                    ::protobuf::rt::read_map_into::<::protobuf::reflect::types::ProtobufTypeString, ::protobuf::reflect::types::ProtobufTypeMessage<Expr>>(wire_type, is, &mut self.rooms)?;
+                    ::protobuf::rt::read_repeated_message_into_vec(wire_type, is, &mut self.rooms)?;
                 },
                 _ => {
                     ::protobuf::rt::read_unknown_or_skip_group(field_number, wire_type, is, self.mut_unknown_fields())?;
@@ -126,7 +131,10 @@ impl ::protobuf::Message for HouseExpr {
             let len = v.compute_size();
             my_size += 1 + ::protobuf::rt::compute_raw_varint32_size(len) + len;
         }
-        my_size += ::protobuf::rt::compute_map_size::<::protobuf::reflect::types::ProtobufTypeString, ::protobuf::reflect::types::ProtobufTypeMessage<Expr>>(3, &self.rooms);
+        for value in &self.rooms {
+            let len = value.compute_size();
+            my_size += 1 + ::protobuf::rt::compute_raw_varint32_size(len) + len;
+        };
         my_size += ::protobuf::rt::unknown_fields_size(self.get_unknown_fields());
         self.cached_size.set(my_size);
         my_size
@@ -139,7 +147,9 @@ impl ::protobuf::Message for HouseExpr {
         if let Some(v) = self.id.as_ref() {
             ::protobuf::rt::write_message_field_with_cached_size(2, v, os)?;
         }
-        ::protobuf::rt::write_map_with_cached_sizes::<::protobuf::reflect::types::ProtobufTypeString, ::protobuf::reflect::types::ProtobufTypeMessage<Expr>>(3, &self.rooms, os)?;
+        for v in &self.rooms {
+            ::protobuf::rt::write_message_field_with_cached_size(3, v, os)?;
+        };
         os.write_unknown_fields(self.get_unknown_fields())?;
         ::std::result::Result::Ok(())
     }
@@ -165,8 +175,14 @@ impl ::protobuf::Message for HouseExpr {
     }
 
     fn default_instance() -> &'static HouseExpr {
-        static instance: ::protobuf::rt::LazyV2<HouseExpr> = ::protobuf::rt::LazyV2::INIT;
-        instance.get(HouseExpr::new)
+        static instance: HouseExpr = HouseExpr {
+            display_name: ::protobuf::MessageField::none(),
+            id: ::protobuf::MessageField::none(),
+            rooms: ::std::vec::Vec::new(),
+            unknown_fields: ::protobuf::UnknownFields::new(),
+            cached_size: ::protobuf::rt::CachedSize::new(),
+        };
+        &instance
     }
 }
 
@@ -192,8 +208,9 @@ impl ::protobuf::reflect::ProtobufValue for HouseExpr {
 #[derive(PartialEq,Clone,Default)]
 pub struct RoomExpr {
     // message fields
+    pub id: ::protobuf::MessageField<Expr>,
     pub display_name: ::protobuf::MessageField<Expr>,
-    pub controllers: ::std::collections::HashMap<::std::string::String, Expr>,
+    pub controllers: ::std::vec::Vec<Expr>,
     pub icon: ::protobuf::MessageField<Expr>,
     // special fields
     pub unknown_fields: ::protobuf::UnknownFields,
@@ -214,11 +231,16 @@ impl RoomExpr {
     fn generated_message_descriptor_data() -> ::protobuf::reflect::GeneratedMessageDescriptorData {
         let mut fields = ::std::vec::Vec::new();
         fields.push(::protobuf::reflect::rt::v2::make_message_field_accessor::<_, Expr>(
+            "id",
+            |m: &RoomExpr| { &m.id },
+            |m: &mut RoomExpr| { &mut m.id },
+        ));
+        fields.push(::protobuf::reflect::rt::v2::make_message_field_accessor::<_, Expr>(
             "display_name",
             |m: &RoomExpr| { &m.display_name },
             |m: &mut RoomExpr| { &mut m.display_name },
         ));
-        fields.push(::protobuf::reflect::rt::v2::make_map_simpler_accessor::<_, _, _>(
+        fields.push(::protobuf::reflect::rt::v2::make_vec_simpler_accessor::<_, _>(
             "controllers",
             |m: &RoomExpr| { &m.controllers },
             |m: &mut RoomExpr| { &mut m.controllers },
@@ -238,10 +260,23 @@ impl RoomExpr {
 
 impl ::protobuf::Message for RoomExpr {
     fn is_initialized(&self) -> bool {
+        if self.id.is_none() {
+            return false;
+        }
         if self.display_name.is_none() {
             return false;
         }
+        for v in &self.id {
+            if !v.is_initialized() {
+                return false;
+            }
+        };
         for v in &self.display_name {
+            if !v.is_initialized() {
+                return false;
+            }
+        };
+        for v in &self.controllers {
             if !v.is_initialized() {
                 return false;
             }
@@ -259,12 +294,15 @@ impl ::protobuf::Message for RoomExpr {
             let (field_number, wire_type) = is.read_tag_unpack()?;
             match field_number {
                 1 => {
-                    ::protobuf::rt::read_singular_message_into_field(wire_type, is, &mut self.display_name)?;
+                    ::protobuf::rt::read_singular_message_into_field(wire_type, is, &mut self.id)?;
                 },
                 2 => {
-                    ::protobuf::rt::read_map_into::<::protobuf::reflect::types::ProtobufTypeString, ::protobuf::reflect::types::ProtobufTypeMessage<Expr>>(wire_type, is, &mut self.controllers)?;
+                    ::protobuf::rt::read_singular_message_into_field(wire_type, is, &mut self.display_name)?;
                 },
                 3 => {
+                    ::protobuf::rt::read_repeated_message_into_vec(wire_type, is, &mut self.controllers)?;
+                },
+                4 => {
                     ::protobuf::rt::read_singular_message_into_field(wire_type, is, &mut self.icon)?;
                 },
                 _ => {
@@ -279,11 +317,18 @@ impl ::protobuf::Message for RoomExpr {
     #[allow(unused_variables)]
     fn compute_size(&self) -> u32 {
         let mut my_size = 0;
+        if let Some(v) = self.id.as_ref() {
+            let len = v.compute_size();
+            my_size += 1 + ::protobuf::rt::compute_raw_varint32_size(len) + len;
+        }
         if let Some(v) = self.display_name.as_ref() {
             let len = v.compute_size();
             my_size += 1 + ::protobuf::rt::compute_raw_varint32_size(len) + len;
         }
-        my_size += ::protobuf::rt::compute_map_size::<::protobuf::reflect::types::ProtobufTypeString, ::protobuf::reflect::types::ProtobufTypeMessage<Expr>>(2, &self.controllers);
+        for value in &self.controllers {
+            let len = value.compute_size();
+            my_size += 1 + ::protobuf::rt::compute_raw_varint32_size(len) + len;
+        };
         if let Some(v) = self.icon.as_ref() {
             let len = v.compute_size();
             my_size += 1 + ::protobuf::rt::compute_raw_varint32_size(len) + len;
@@ -294,12 +339,17 @@ impl ::protobuf::Message for RoomExpr {
     }
 
     fn write_to_with_cached_sizes(&self, os: &mut ::protobuf::CodedOutputStream<'_>) -> ::protobuf::ProtobufResult<()> {
-        if let Some(v) = self.display_name.as_ref() {
+        if let Some(v) = self.id.as_ref() {
             ::protobuf::rt::write_message_field_with_cached_size(1, v, os)?;
         }
-        ::protobuf::rt::write_map_with_cached_sizes::<::protobuf::reflect::types::ProtobufTypeString, ::protobuf::reflect::types::ProtobufTypeMessage<Expr>>(2, &self.controllers, os)?;
-        if let Some(v) = self.icon.as_ref() {
+        if let Some(v) = self.display_name.as_ref() {
+            ::protobuf::rt::write_message_field_with_cached_size(2, v, os)?;
+        }
+        for v in &self.controllers {
             ::protobuf::rt::write_message_field_with_cached_size(3, v, os)?;
+        };
+        if let Some(v) = self.icon.as_ref() {
+            ::protobuf::rt::write_message_field_with_cached_size(4, v, os)?;
         }
         os.write_unknown_fields(self.get_unknown_fields())?;
         ::std::result::Result::Ok(())
@@ -322,17 +372,25 @@ impl ::protobuf::Message for RoomExpr {
     }
 
     fn descriptor_static() -> ::protobuf::reflect::MessageDescriptor {
-        ::protobuf::reflect::MessageDescriptor::new_generated_2(file_descriptor(), 2)
+        ::protobuf::reflect::MessageDescriptor::new_generated_2(file_descriptor(), 1)
     }
 
     fn default_instance() -> &'static RoomExpr {
-        static instance: ::protobuf::rt::LazyV2<RoomExpr> = ::protobuf::rt::LazyV2::INIT;
-        instance.get(RoomExpr::new)
+        static instance: RoomExpr = RoomExpr {
+            id: ::protobuf::MessageField::none(),
+            display_name: ::protobuf::MessageField::none(),
+            controllers: ::std::vec::Vec::new(),
+            icon: ::protobuf::MessageField::none(),
+            unknown_fields: ::protobuf::UnknownFields::new(),
+            cached_size: ::protobuf::rt::CachedSize::new(),
+        };
+        &instance
     }
 }
 
 impl ::protobuf::Clear for RoomExpr {
     fn clear(&mut self) {
+        self.id.clear();
         self.display_name.clear();
         self.controllers.clear();
         self.icon.clear();
@@ -353,6 +411,7 @@ impl ::protobuf::reflect::ProtobufValue for RoomExpr {
 #[derive(PartialEq,Clone,Default)]
 pub struct ControllerExpr {
     // message fields
+    pub id: ::protobuf::MessageField<Expr>,
     pub display_name: ::protobuf::MessageField<Expr>,
     pub brand_color: ::protobuf::MessageField<Expr>,
     pub display_interface: ::protobuf::MessageField<Expr>,
@@ -374,6 +433,11 @@ impl ControllerExpr {
 
     fn generated_message_descriptor_data() -> ::protobuf::reflect::GeneratedMessageDescriptorData {
         let mut fields = ::std::vec::Vec::new();
+        fields.push(::protobuf::reflect::rt::v2::make_message_field_accessor::<_, Expr>(
+            "id",
+            |m: &ControllerExpr| { &m.id },
+            |m: &mut ControllerExpr| { &mut m.id },
+        ));
         fields.push(::protobuf::reflect::rt::v2::make_message_field_accessor::<_, Expr>(
             "display_name",
             |m: &ControllerExpr| { &m.display_name },
@@ -399,9 +463,17 @@ impl ControllerExpr {
 
 impl ::protobuf::Message for ControllerExpr {
     fn is_initialized(&self) -> bool {
+        if self.id.is_none() {
+            return false;
+        }
         if self.display_name.is_none() {
             return false;
         }
+        for v in &self.id {
+            if !v.is_initialized() {
+                return false;
+            }
+        };
         for v in &self.display_name {
             if !v.is_initialized() {
                 return false;
@@ -425,12 +497,15 @@ impl ::protobuf::Message for ControllerExpr {
             let (field_number, wire_type) = is.read_tag_unpack()?;
             match field_number {
                 1 => {
-                    ::protobuf::rt::read_singular_message_into_field(wire_type, is, &mut self.display_name)?;
+                    ::protobuf::rt::read_singular_message_into_field(wire_type, is, &mut self.id)?;
                 },
                 2 => {
-                    ::protobuf::rt::read_singular_message_into_field(wire_type, is, &mut self.brand_color)?;
+                    ::protobuf::rt::read_singular_message_into_field(wire_type, is, &mut self.display_name)?;
                 },
                 3 => {
+                    ::protobuf::rt::read_singular_message_into_field(wire_type, is, &mut self.brand_color)?;
+                },
+                4 => {
                     ::protobuf::rt::read_singular_message_into_field(wire_type, is, &mut self.display_interface)?;
                 },
                 _ => {
@@ -445,6 +520,10 @@ impl ::protobuf::Message for ControllerExpr {
     #[allow(unused_variables)]
     fn compute_size(&self) -> u32 {
         let mut my_size = 0;
+        if let Some(v) = self.id.as_ref() {
+            let len = v.compute_size();
+            my_size += 1 + ::protobuf::rt::compute_raw_varint32_size(len) + len;
+        }
         if let Some(v) = self.display_name.as_ref() {
             let len = v.compute_size();
             my_size += 1 + ::protobuf::rt::compute_raw_varint32_size(len) + len;
@@ -463,14 +542,17 @@ impl ::protobuf::Message for ControllerExpr {
     }
 
     fn write_to_with_cached_sizes(&self, os: &mut ::protobuf::CodedOutputStream<'_>) -> ::protobuf::ProtobufResult<()> {
-        if let Some(v) = self.display_name.as_ref() {
+        if let Some(v) = self.id.as_ref() {
             ::protobuf::rt::write_message_field_with_cached_size(1, v, os)?;
         }
-        if let Some(v) = self.brand_color.as_ref() {
+        if let Some(v) = self.display_name.as_ref() {
             ::protobuf::rt::write_message_field_with_cached_size(2, v, os)?;
         }
-        if let Some(v) = self.display_interface.as_ref() {
+        if let Some(v) = self.brand_color.as_ref() {
             ::protobuf::rt::write_message_field_with_cached_size(3, v, os)?;
+        }
+        if let Some(v) = self.display_interface.as_ref() {
+            ::protobuf::rt::write_message_field_with_cached_size(4, v, os)?;
         }
         os.write_unknown_fields(self.get_unknown_fields())?;
         ::std::result::Result::Ok(())
@@ -493,11 +575,12 @@ impl ::protobuf::Message for ControllerExpr {
     }
 
     fn descriptor_static() -> ::protobuf::reflect::MessageDescriptor {
-        ::protobuf::reflect::MessageDescriptor::new_generated_2(file_descriptor(), 4)
+        ::protobuf::reflect::MessageDescriptor::new_generated_2(file_descriptor(), 2)
     }
 
     fn default_instance() -> &'static ControllerExpr {
         static instance: ControllerExpr = ControllerExpr {
+            id: ::protobuf::MessageField::none(),
             display_name: ::protobuf::MessageField::none(),
             brand_color: ::protobuf::MessageField::none(),
             display_interface: ::protobuf::MessageField::none(),
@@ -510,6 +593,7 @@ impl ::protobuf::Message for ControllerExpr {
 
 impl ::protobuf::Clear for ControllerExpr {
     fn clear(&mut self) {
+        self.id.clear();
         self.display_name.clear();
         self.brand_color.clear();
         self.display_interface.clear();
@@ -625,7 +709,7 @@ impl ::protobuf::Message for DisplayInterfaceExpr {
     }
 
     fn descriptor_static() -> ::protobuf::reflect::MessageDescriptor {
-        ::protobuf::reflect::MessageDescriptor::new_generated_2(file_descriptor(), 5)
+        ::protobuf::reflect::MessageDescriptor::new_generated_2(file_descriptor(), 3)
     }
 
     fn default_instance() -> &'static DisplayInterfaceExpr {
@@ -743,7 +827,7 @@ impl ::protobuf::Message for DeviceExpr {
     }
 
     fn descriptor_static() -> ::protobuf::reflect::MessageDescriptor {
-        ::protobuf::reflect::MessageDescriptor::new_generated_2(file_descriptor(), 6)
+        ::protobuf::reflect::MessageDescriptor::new_generated_2(file_descriptor(), 4)
     }
 
     fn default_instance() -> &'static DeviceExpr {
@@ -936,7 +1020,7 @@ impl ::protobuf::Message for WidgetExpr {
     }
 
     fn descriptor_static() -> ::protobuf::reflect::MessageDescriptor {
-        ::protobuf::reflect::MessageDescriptor::new_generated_2(file_descriptor(), 8)
+        ::protobuf::reflect::MessageDescriptor::new_generated_2(file_descriptor(), 6)
     }
 
     fn default_instance() -> &'static WidgetExpr {
@@ -1099,7 +1183,7 @@ impl ::protobuf::Message for RefExpr {
     }
 
     fn descriptor_static() -> ::protobuf::reflect::MessageDescriptor {
-        ::protobuf::reflect::MessageDescriptor::new_generated_2(file_descriptor(), 10)
+        ::protobuf::reflect::MessageDescriptor::new_generated_2(file_descriptor(), 8)
     }
 
     fn default_instance() -> &'static RefExpr {
@@ -1245,7 +1329,7 @@ impl ::protobuf::Message for LambdaExpr {
     }
 
     fn descriptor_static() -> ::protobuf::reflect::MessageDescriptor {
-        ::protobuf::reflect::MessageDescriptor::new_generated_2(file_descriptor(), 11)
+        ::protobuf::reflect::MessageDescriptor::new_generated_2(file_descriptor(), 9)
     }
 
     fn default_instance() -> &'static LambdaExpr {
@@ -1399,7 +1483,7 @@ impl ::protobuf::Message for CallExpr {
     }
 
     fn descriptor_static() -> ::protobuf::reflect::MessageDescriptor {
-        ::protobuf::reflect::MessageDescriptor::new_generated_2(file_descriptor(), 12)
+        ::protobuf::reflect::MessageDescriptor::new_generated_2(file_descriptor(), 10)
     }
 
     fn default_instance() -> &'static CallExpr {
@@ -1556,7 +1640,7 @@ impl ::protobuf::Message for Elif {
     }
 
     fn descriptor_static() -> ::protobuf::reflect::MessageDescriptor {
-        ::protobuf::reflect::MessageDescriptor::new_generated_2(file_descriptor(), 13)
+        ::protobuf::reflect::MessageDescriptor::new_generated_2(file_descriptor(), 11)
     }
 
     fn default_instance() -> &'static Elif {
@@ -1758,7 +1842,7 @@ impl ::protobuf::Message for IfExpr {
     }
 
     fn descriptor_static() -> ::protobuf::reflect::MessageDescriptor {
-        ::protobuf::reflect::MessageDescriptor::new_generated_2(file_descriptor(), 14)
+        ::protobuf::reflect::MessageDescriptor::new_generated_2(file_descriptor(), 12)
     }
 
     fn default_instance() -> &'static IfExpr {
@@ -2011,7 +2095,7 @@ impl ::protobuf::Message for Position {
     }
 
     fn descriptor_static() -> ::protobuf::reflect::MessageDescriptor {
-        ::protobuf::reflect::MessageDescriptor::new_generated_2(file_descriptor(), 15)
+        ::protobuf::reflect::MessageDescriptor::new_generated_2(file_descriptor(), 13)
     }
 
     fn default_instance() -> &'static Position {
@@ -3132,7 +3216,7 @@ impl ::protobuf::Message for Expr {
     }
 
     fn descriptor_static() -> ::protobuf::reflect::MessageDescriptor {
-        ::protobuf::reflect::MessageDescriptor::new_generated_2(file_descriptor(), 16)
+        ::protobuf::reflect::MessageDescriptor::new_generated_2(file_descriptor(), 14)
     }
 
     fn default_instance() -> &'static Expr {
@@ -3316,7 +3400,7 @@ impl ::protobuf::Message for Module {
     }
 
     fn descriptor_static() -> ::protobuf::reflect::MessageDescriptor {
-        ::protobuf::reflect::MessageDescriptor::new_generated_2(file_descriptor(), 17)
+        ::protobuf::reflect::MessageDescriptor::new_generated_2(file_descriptor(), 15)
     }
 
     fn default_instance() -> &'static Module {
@@ -3344,66 +3428,63 @@ impl ::protobuf::reflect::ProtobufValue for Module {
 }
 
 static file_descriptor_proto_data: &'static [u8] = b"\
-    \n\x17OpenControllerLib.proto\x12\x05model\"\xd2\x01\n\tHouseExpr\x12.\n\
-    \x0cdisplay_name\x18\x01\x20\x02(\x0b2\x0b.model.ExprR\x0bdisplayName\
-    \x12\x1b\n\x02id\x18\x02\x20\x02(\x0b2\x0b.model.ExprR\x02id\x121\n\x05r\
-    ooms\x18\x03\x20\x03(\x0b2\x1b.model.HouseExpr.RoomsEntryR\x05rooms\x1aE\
-    \n\nRoomsEntry\x12\x10\n\x03key\x18\x01\x20\x01(\tR\x03key\x12!\n\x05val\
-    ue\x18\x02\x20\x01(\x0b2\x0b.model.ExprR\x05value:\x028\x01\"\xec\x01\n\
-    \x08RoomExpr\x12.\n\x0cdisplay_name\x18\x01\x20\x02(\x0b2\x0b.model.Expr\
-    R\x0bdisplayName\x12B\n\x0bcontrollers\x18\x02\x20\x03(\x0b2\x20.model.R\
-    oomExpr.ControllersEntryR\x0bcontrollers\x12\x1f\n\x04icon\x18\x03\x20\
-    \x01(\x0b2\x0b.model.ExprR\x04icon\x1aK\n\x10ControllersEntry\x12\x10\n\
-    \x03key\x18\x01\x20\x01(\tR\x03key\x12!\n\x05value\x18\x02\x20\x01(\x0b2\
-    \x0b.model.ExprR\x05value:\x028\x01\"\xa8\x01\n\x0eControllerExpr\x12.\n\
-    \x0cdisplay_name\x18\x01\x20\x02(\x0b2\x0b.model.ExprR\x0bdisplayName\
-    \x12,\n\x0bbrand_color\x18\x02\x20\x01(\x0b2\x0b.model.ExprR\nbrandColor\
-    \x128\n\x11display_interface\x18\x03\x20\x01(\x0b2\x0b.model.ExprR\x10di\
-    splayInterface\"=\n\x14DisplayInterfaceExpr\x12%\n\x07widgets\x18\x01\
-    \x20\x03(\x0b2\x0b.model.ExprR\x07widgets\"\x8f\x01\n\nDeviceExpr\x128\n\
-    \x07lambdas\x18\x01\x20\x03(\x0b2\x1e.model.DeviceExpr.LambdasEntryR\x07\
-    lambdas\x1aG\n\x0cLambdasEntry\x12\x10\n\x03key\x18\x01\x20\x01(\tR\x03k\
-    ey\x12!\n\x05value\x18\x02\x20\x01(\x0b2\x0b.model.ExprR\x05value:\x028\
-    \x01\"\xd5\x01\n\nWidgetExpr\x12\x1f\n\x0bwidget_type\x18\x02\x20\x02(\t\
-    R\nwidgetType\x125\n\x06params\x18\x03\x20\x03(\x0b2\x1d.model.WidgetExp\
-    r.ParamsEntryR\x06params\x12'\n\x08children\x18\x04\x20\x03(\x0b2\x0b.mo\
-    del.ExprR\x08children\x1aF\n\x0bParamsEntry\x12\x10\n\x03key\x18\x01\x20\
-    \x01(\tR\x03key\x12!\n\x05value\x18\x02\x20\x01(\x0b2\x0b.model.ExprR\
-    \x05value:\x028\x01\"\x1b\n\x07RefExpr\x12\x10\n\x03ref\x18\x01\x20\x02(\
-    \tR\x03ref\"E\n\nLambdaExpr\x12\x12\n\x04args\x18\x01\x20\x03(\tR\x04arg\
-    s\x12#\n\x06return\x18\x02\x20\x02(\x0b2\x0b.model.ExprR\x06return\"R\n\
-    \x08CallExpr\x12%\n\x07calling\x18\x01\x20\x02(\x0b2\x0b.model.ExprR\x07\
-    calling\x12\x1f\n\x04args\x18\x02\x20\x03(\x0b2\x0b.model.ExprR\x04args\
-    \"R\n\x04Elif\x12)\n\tcondition\x18\x01\x20\x02(\x0b2\x0b.model.ExprR\tc\
-    ondition\x12\x1f\n\x04then\x18\x02\x20\x02(\x0b2\x0b.model.ExprR\x04then\
-    \"\x96\x01\n\x06IfExpr\x12)\n\tcondition\x18\x01\x20\x02(\x0b2\x0b.model\
-    .ExprR\tcondition\x12\x1f\n\x04then\x18\x02\x20\x02(\x0b2\x0b.model.Expr\
-    R\x04then\x12\x1f\n\x04elif\x18\x03\x20\x03(\x0b2\x0b.model.ElifR\x04eli\
-    f\x12\x1f\n\x04else\x18\x04\x20\x02(\x0b2\x0b.model.ExprR\x04else\"J\n\
-    \x08Position\x12\x12\n\x04file\x18\x01\x20\x02(\tR\x04file\x12\x12\n\x04\
-    line\x18\x02\x20\x02(\x05R\x04line\x12\x16\n\x06column\x18\x03\x20\x02(\
-    \x05R\x06column\"\xfd\x04\n\x04Expr\x12+\n\x08position\x18\x01\x20\x01(\
-    \x0b2\x0f.model.PositionR\x08position\x12\"\n\x03ref\x18\x02\x20\x01(\
-    \x0b2\x0e.model.RefExprH\0R\x03ref\x12+\n\x06lambda\x18\x03\x20\x01(\x0b\
-    2\x11.model.LambdaExprH\0R\x06lambda\x12%\n\x04call\x18\x04\x20\x01(\x0b\
-    2\x0f.model.CallExprH\0R\x04call\x12\x18\n\x06string\x18\x05\x20\x01(\tH\
-    \0R\x06string\x12\x16\n\x05int64\x18\x06\x20\x01(\x03H\0R\x05int64\x12\
-    \x16\n\x05int32\x18\x07\x20\x01(\x05H\0R\x05int32\x12\x16\n\x05float\x18\
-    \x08\x20\x01(\x02H\0R\x05float\x12\x14\n\x04bool\x18\t\x20\x01(\x08H\0R\
-    \x04bool\x12(\n\x05house\x18\n\x20\x01(\x0b2\x10.model.HouseExprH\0R\x05\
-    house\x12%\n\x04room\x18\x0b\x20\x01(\x0b2\x0f.model.RoomExprH\0R\x04roo\
-    m\x127\n\ncontroller\x18\x0c\x20\x01(\x0b2\x15.model.ControllerExprH\0R\
-    \ncontroller\x12J\n\x11display_interface\x18\r\x20\x01(\x0b2\x1b.model.D\
-    isplayInterfaceExprH\0R\x10displayInterface\x12+\n\x06device\x18\x0e\x20\
-    \x01(\x0b2\x11.model.DeviceExprH\0R\x06device\x12+\n\x06widget\x18\x0f\
-    \x20\x01(\x0b2\x11.model.WidgetExprH\0R\x06widget\x12\x1f\n\x02if\x18\
-    \x10\x20\x01(\x0b2\r.model.IfExprH\0R\x02ifB\x07\n\x05inner\"\xaa\x01\n\
-    \x06Module\x124\n\x07imports\x18\x01\x20\x03(\x0b2\x1a.model.Module.Impo\
-    rtsEntryR\x07imports\x12\x1f\n\x04body\x18\x02\x20\x02(\x0b2\x0b.model.E\
-    xprR\x04body\x1aI\n\x0cImportsEntry\x12\x10\n\x03key\x18\x01\x20\x01(\tR\
-    \x03key\x12#\n\x05value\x18\x02\x20\x01(\x0b2\r.model.ModuleR\x05value:\
-    \x028\x01BR\n&com.pjtsearch.opencontroller_lib_protoP\x01Z&pjtsearch.com\
-    /opencontroller_lib_proto\
+    \n\x17OpenControllerLib.proto\x12\x05model\"{\n\tHouseExpr\x12.\n\x0cdis\
+    play_name\x18\x01\x20\x02(\x0b2\x0b.model.ExprR\x0bdisplayName\x12\x1b\n\
+    \x02id\x18\x02\x20\x02(\x0b2\x0b.model.ExprR\x02id\x12!\n\x05rooms\x18\
+    \x03\x20\x03(\x0b2\x0b.model.ExprR\x05rooms\"\xa7\x01\n\x08RoomExpr\x12\
+    \x1b\n\x02id\x18\x01\x20\x02(\x0b2\x0b.model.ExprR\x02id\x12.\n\x0cdispl\
+    ay_name\x18\x02\x20\x02(\x0b2\x0b.model.ExprR\x0bdisplayName\x12-\n\x0bc\
+    ontrollers\x18\x03\x20\x03(\x0b2\x0b.model.ExprR\x0bcontrollers\x12\x1f\
+    \n\x04icon\x18\x04\x20\x01(\x0b2\x0b.model.ExprR\x04icon\"\xc5\x01\n\x0e\
+    ControllerExpr\x12\x1b\n\x02id\x18\x01\x20\x02(\x0b2\x0b.model.ExprR\x02\
+    id\x12.\n\x0cdisplay_name\x18\x02\x20\x02(\x0b2\x0b.model.ExprR\x0bdispl\
+    ayName\x12,\n\x0bbrand_color\x18\x03\x20\x01(\x0b2\x0b.model.ExprR\nbran\
+    dColor\x128\n\x11display_interface\x18\x04\x20\x01(\x0b2\x0b.model.ExprR\
+    \x10displayInterface\"=\n\x14DisplayInterfaceExpr\x12%\n\x07widgets\x18\
+    \x01\x20\x03(\x0b2\x0b.model.ExprR\x07widgets\"\x8f\x01\n\nDeviceExpr\
+    \x128\n\x07lambdas\x18\x01\x20\x03(\x0b2\x1e.model.DeviceExpr.LambdasEnt\
+    ryR\x07lambdas\x1aG\n\x0cLambdasEntry\x12\x10\n\x03key\x18\x01\x20\x01(\
+    \tR\x03key\x12!\n\x05value\x18\x02\x20\x01(\x0b2\x0b.model.ExprR\x05valu\
+    e:\x028\x01\"\xd5\x01\n\nWidgetExpr\x12\x1f\n\x0bwidget_type\x18\x02\x20\
+    \x02(\tR\nwidgetType\x125\n\x06params\x18\x03\x20\x03(\x0b2\x1d.model.Wi\
+    dgetExpr.ParamsEntryR\x06params\x12'\n\x08children\x18\x04\x20\x03(\x0b2\
+    \x0b.model.ExprR\x08children\x1aF\n\x0bParamsEntry\x12\x10\n\x03key\x18\
+    \x01\x20\x01(\tR\x03key\x12!\n\x05value\x18\x02\x20\x01(\x0b2\x0b.model.\
+    ExprR\x05value:\x028\x01\"\x1b\n\x07RefExpr\x12\x10\n\x03ref\x18\x01\x20\
+    \x02(\tR\x03ref\"E\n\nLambdaExpr\x12\x12\n\x04args\x18\x01\x20\x03(\tR\
+    \x04args\x12#\n\x06return\x18\x02\x20\x02(\x0b2\x0b.model.ExprR\x06retur\
+    n\"R\n\x08CallExpr\x12%\n\x07calling\x18\x01\x20\x02(\x0b2\x0b.model.Exp\
+    rR\x07calling\x12\x1f\n\x04args\x18\x02\x20\x03(\x0b2\x0b.model.ExprR\
+    \x04args\"R\n\x04Elif\x12)\n\tcondition\x18\x01\x20\x02(\x0b2\x0b.model.\
+    ExprR\tcondition\x12\x1f\n\x04then\x18\x02\x20\x02(\x0b2\x0b.model.ExprR\
+    \x04then\"\x96\x01\n\x06IfExpr\x12)\n\tcondition\x18\x01\x20\x02(\x0b2\
+    \x0b.model.ExprR\tcondition\x12\x1f\n\x04then\x18\x02\x20\x02(\x0b2\x0b.\
+    model.ExprR\x04then\x12\x1f\n\x04elif\x18\x03\x20\x03(\x0b2\x0b.model.El\
+    ifR\x04elif\x12\x1f\n\x04else\x18\x04\x20\x02(\x0b2\x0b.model.ExprR\x04e\
+    lse\"J\n\x08Position\x12\x12\n\x04file\x18\x01\x20\x02(\tR\x04file\x12\
+    \x12\n\x04line\x18\x02\x20\x02(\x05R\x04line\x12\x16\n\x06column\x18\x03\
+    \x20\x02(\x05R\x06column\"\xfd\x04\n\x04Expr\x12+\n\x08position\x18\x01\
+    \x20\x01(\x0b2\x0f.model.PositionR\x08position\x12\"\n\x03ref\x18\x02\
+    \x20\x01(\x0b2\x0e.model.RefExprH\0R\x03ref\x12+\n\x06lambda\x18\x03\x20\
+    \x01(\x0b2\x11.model.LambdaExprH\0R\x06lambda\x12%\n\x04call\x18\x04\x20\
+    \x01(\x0b2\x0f.model.CallExprH\0R\x04call\x12\x18\n\x06string\x18\x05\
+    \x20\x01(\tH\0R\x06string\x12\x16\n\x05int64\x18\x06\x20\x01(\x03H\0R\
+    \x05int64\x12\x16\n\x05int32\x18\x07\x20\x01(\x05H\0R\x05int32\x12\x16\n\
+    \x05float\x18\x08\x20\x01(\x02H\0R\x05float\x12\x14\n\x04bool\x18\t\x20\
+    \x01(\x08H\0R\x04bool\x12(\n\x05house\x18\n\x20\x01(\x0b2\x10.model.Hous\
+    eExprH\0R\x05house\x12%\n\x04room\x18\x0b\x20\x01(\x0b2\x0f.model.RoomEx\
+    prH\0R\x04room\x127\n\ncontroller\x18\x0c\x20\x01(\x0b2\x15.model.Contro\
+    llerExprH\0R\ncontroller\x12J\n\x11display_interface\x18\r\x20\x01(\x0b2\
+    \x1b.model.DisplayInterfaceExprH\0R\x10displayInterface\x12+\n\x06device\
+    \x18\x0e\x20\x01(\x0b2\x11.model.DeviceExprH\0R\x06device\x12+\n\x06widg\
+    et\x18\x0f\x20\x01(\x0b2\x11.model.WidgetExprH\0R\x06widget\x12\x1f\n\
+    \x02if\x18\x10\x20\x01(\x0b2\r.model.IfExprH\0R\x02ifB\x07\n\x05inner\"\
+    \xaa\x01\n\x06Module\x124\n\x07imports\x18\x01\x20\x03(\x0b2\x1a.model.M\
+    odule.ImportsEntryR\x07imports\x12\x1f\n\x04body\x18\x02\x20\x02(\x0b2\
+    \x0b.model.ExprR\x04body\x1aI\n\x0cImportsEntry\x12\x10\n\x03key\x18\x01\
+    \x20\x01(\tR\x03key\x12#\n\x05value\x18\x02\x20\x01(\x0b2\r.model.Module\
+    R\x05value:\x028\x01BR\n&com.pjtsearch.opencontroller_lib_protoP\x01Z&pj\
+    tsearch.com/opencontroller_lib_proto\
 ";
 
 /// `FileDescriptorProto` object which was a source for this generated file
