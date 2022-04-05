@@ -3,7 +3,7 @@ import "rooms/Nook/room.ocdef" as nook
 house {
     id "testHouse"
     displayName "Test House"
-    rooms {
-        @nook nook
-    }
+    rooms [
+        nook
+    ]
 }

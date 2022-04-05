@@ -3,12 +3,25 @@ import "../../controller-templates/FiOS.ocdef" as fios
 import "./devices.ocdef" as devices
 
 room {
+    id "nook"
     displayName "Nook"
     icon "NOOK"
-    controllers {
-        
-        @nookRoku (roku 
-            "Nook Roku"
+    controllers [
+        (fios
+            "nookFiOS"
+            "FiOS"
+            (unwrap devices["centralFiOS"])
+            (unwrap devices["nookTV"])
+            (unwrap devices["centralMatrix"])
+            "1"
+            "1"
+            (unwrap devices["centralAudioReceiver"])
+            "2"
+            "SAT/CBL"
+        )
+        (roku 
+            "nookRoku"
+            "Roku"
             (unwrap devices["centralRoku"])
             (unwrap devices["nookTV"])
             (unwrap devices["centralMatrix"])
@@ -18,16 +31,5 @@ room {
             "2"
             "DVD"
         )
-        @nookFiOS (fios
-            "Nook FiOS"
-            (unwrap devices["centralFiOS"])
-            (unwrap devices["nookTV"])
-            (unwrap devices["centralMatrix"])
-            "1"
-            "1"
-            (unwrap devices["centralAudioReceiver"])
-            "2"
-            "Cable"
-        )
-    }
+    ]
 }

@@ -1,7 +1,8 @@
-(name, fios, tv, matrix, matrixOutput, matrixInput, audioReceiver, audioReceiverZone, audioReceiverOutput) =>
+(id, name, fios, tv, matrix, matrixOutput, matrixInput, audioReceiver, audioReceiverZone, audioReceiverOutput) =>
     controller {
+        id id
         displayName name
-        brandColor "#ff8880"
+        brandColor "#ff534f"
         displayInterface displayInterface {
             widgets [
                 <row>
@@ -24,35 +25,41 @@
                             icon="DVR"
                             size={1}
                         ></button>
+                        <button
+                            onClick={fios.exit}
+                            text="Exit"
+                            icon="EXIT"
+                            size={1}
+                        ></button>
                     </row>
                     <row>
-                        <button
-                            onClick={() => (pipe ""
-                                fios.off
-                                () => (audioReceiver.off audioReceiverZone)
-                                tv.off
-                            )}
-                            text="Off"
-                            icon="OFF"
-                            size={1}
-                        ></button>
-                        <button
-                            onClick={() => (pipe ""
-                                tv.on
-                                () => (delay 200)
-                                () => (matrix.set matrixOutput matrixInput)
-                                () => (delay 200)
-                                () => (audioReceiver.on audioReceiverZone)
-                                () => (delay 200)
-                                () => (audioReceiver.set audioReceiverZone audioReceiverOutput)
-                                () => (delay 200)
-                                () => (audioReceiver.volumeSet audioReceiverZone)
-                                fios.on
-                            )}
-                            text="On"
-                            icon="ON"
-                            size={1}
-                        ></button>
+                        <buttongroup size={1}>
+                            <button
+                                onClick={() => (pipe ""
+                                    fios.off
+                                    () => (audioReceiver.off audioReceiverZone)
+                                    tv.off
+                                )}
+                                text="Off"
+                                icon="OFF"
+                            ></button>
+                            <button
+                                onClick={() => (pipe ""
+                                    tv.on
+                                    () => (delay 500)
+                                    () => (matrix.set matrixOutput matrixInput)
+                                    () => (delay 4500)
+                                    () => (audioReceiver.on audioReceiverZone)
+                                    () => (delay 4500)
+                                    () => (audioReceiver.set audioReceiverZone audioReceiverOutput)
+                                    () => (delay 700)
+                                    () => (audioReceiver.volumeSet audioReceiverZone)
+                                    fios.on
+                                )}
+                                text="On"
+                                icon="ON"
+                            ></button>
+                        </buttongroup>
                     </row>
                 </row>
                 <swipepad
@@ -68,7 +75,7 @@
                     onBottomDecrease={() =>
                         (audioReceiver.volumeDown audioReceiverZone)
                     }
-                    onBottomClick={() =>
+                    onBottomHold={() =>
                         (audioReceiver.volumeMute audioReceiverZone)
                     }
                     bottomIncreaseIcon="VOLUME_UP"
@@ -83,9 +90,9 @@
                             size={1}
                         ></button>
                         <button
-                            onClick={fios.exit}
-                            text="Exit"
-                            icon="EXIT"
+                            onClick={fios.stop}
+                            text="Stop"
+                            icon="STOP"
                             size={1}
                         ></button>
                     </column>
@@ -109,9 +116,9 @@
                         >
                             <row>
                                 <button
-                                    onClick={fios.record}
-                                    text="Record"
-                                    icon="RECORD"
+                                    onClick={fios.menu}
+                                    text="Menu"
+                                    icon="MENU"
                                 ></button>
                                 <column>
                                     <row>
@@ -121,9 +128,9 @@
                                             icon="REVERSE"
                                         ></button>
                                         <button
-                                            onClick={fios.stop}
-                                            text="stop"
-                                            icon="STOP"
+                                            onClick={fios.record}
+                                            text="Record"
+                                            icon="RECORD"
                                         ></button>
                                         <button
                                             onClick={fios.forward}
@@ -140,11 +147,6 @@
                             </row>
                             <row>
                                 <column>
-                                    <button
-                                        onClick={fios.menu}
-                                        text="Menu"
-                                        icon="MENU"
-                                    ></button>
                                     <button
                                         onClick={fios.options}
                                         text="Options"

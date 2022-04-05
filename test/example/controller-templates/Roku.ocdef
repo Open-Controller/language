@@ -1,7 +1,8 @@
-(name, roku, tv, matrix, matrixOutput, matrixInput, audioReceiver, audioReceiverZone, audioReceiverOutput) =>
+(id, name, roku, tv, matrix, matrixOutput, matrixInput, audioReceiver, audioReceiverZone, audioReceiverOutput) =>
     controller {
+        id id
         displayName name
-        brandColor "#b388ff"
+        brandColor "#be75d0"
         displayInterface displayInterface {
             widgets [
                 <row>
@@ -12,33 +13,39 @@
                             icon="HOME"
                             size={1}
                         ></button>
+                        <textinput
+                            onInput={(keyEvent) => (roku.keypress (+ "Lit_" (unwrap keyEvent["char"])))}
+                            text="Keyboard"
+                            icon="ARROW_UP"
+                            size={1}
+                        ></textinput>
                     </row>
                     <row>
-                        <button
-                            onClick={() => (pipe ""
-                                () => (audioReceiver.off audioReceiverZone)
-                                () => (tv.off)
-                            )}
-                            text="Power Off"
-                            icon="OFF"
-                            size={1}
-                        ></button>
-                        <button
-                            onClick={() => (pipe ""
-                                () => (tv.on)
-                                () => (delay 200)
-                                () => (matrix.set matrixOutput matrixInput)
-                                () => (delay 200)
-                                () => (audioReceiver.on audioReceiverZone)
-                                () => (delay 200)
-                                () => (audioReceiver.set audioReceiverZone audioReceiverOutput)
-                                () => (delay 200)
-                                () => (audioReceiver.volumeSet audioReceiverZone)
-                            )}
-                            text="Power On"
-                            icon="ON"
-                            size={1}
-                        ></button>
+                        <buttongroup size={1}>
+                            <button
+                                onClick={() => (pipe ""
+                                    () => (audioReceiver.off audioReceiverZone)
+                                    () => (tv.off)
+                                )}
+                                text="Power Off"
+                                icon="OFF"
+                            ></button>
+                            <button
+                                onClick={() => (pipe ""
+                                    () => (tv.on)
+                                    () => (delay 200)
+                                    () => (matrix.set matrixOutput matrixInput)
+                                    () => (delay 200)
+                                    () => (audioReceiver.on audioReceiverZone)
+                                    () => (delay 200)
+                                    () => (audioReceiver.set audioReceiverZone audioReceiverOutput)
+                                    () => (delay 200)
+                                    () => (audioReceiver.volumeSet audioReceiverZone)
+                                )}
+                                text="Power On"
+                                icon="ON"
+                            ></button>
+                        </buttongroup>
                     </row>
                 </row>
                 <swipepad

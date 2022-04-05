@@ -5,9 +5,9 @@ import "../../device-templates/Roku.ocdef" as roku
 import "../../device-templates/FiOS.ocdef" as fios
 
 (mapOf
-    (pair "centralRoku" (roku "http://192.168.1.100:8060"))
-    (pair "nookTV" (tv "192.168.1.101" 4998 "1:1"))
-    (pair "centralMatrix" (matrix "192.168.1.102" 4999))
-    (pair "centralAudioReceiver" (audioReceiver "192.168.1.103" 23))
-    (pair "centralFiOS" (fios "192.168.1.104" 4998 "1:1"))
+    (pair "centralRoku" (roku "http://192.168.1.105:8060"))
+    (pair "nookTV" (tv "192.168.1.62" 4998 "1:1"))
+    (pair "centralMatrix" (matrix "192.168.1.66" 4999))
+    (pair "centralAudioReceiver" (audioReceiver "192.168.1.30" 23))
+    (pair "centralFiOS" (fios "192.168.1.60" 4998 "1:1"))
 )
