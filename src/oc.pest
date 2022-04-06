@@ -35,7 +35,7 @@ controller = { "controller" ~ "{" ~ (struct_param)+ ~ "}" }
 display_interface = { "displayInterface" ~ "{" ~ (struct_param)+ ~ "}" }
 device = { "device" ~ "{" ~ (struct_param)+ ~ "}" }
 
-ident = @{ (char)+ | "+" | "-" | "*" | "/" | "%" | "$" | "=" | "!" | ">" | "<" }
+ident = @{ (char)+ | "+" | "-" | "*" | "/" | "%" | "$" | "=" | "<=" | ">=" | "!=" | "!" | ">" | "<" }
 ref_expr = @{ ident }
 lambda_args = { (ident)? ~ ("," ~ ident)* }
 lambda = { "(" ~ lambda_args ~ ")" ~ "=>" ~ expr }
