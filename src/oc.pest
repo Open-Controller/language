@@ -1,4 +1,5 @@
 WHITESPACE = _{ " " | "\n" | "\t" }
+COMMENT = _{ "#" ~ (!"\n" ~ ANY)* }
 char = { ASCII_ALPHANUMERIC | "_" }
 
 // matches anything between 2 double quotes
