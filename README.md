@@ -4,6 +4,8 @@ A compiler for OpenController house specifications.
 
 ## [Example Usage](test/example)
 
+## [Documentation](https://open-controller.github.io/language/)
+
 ## Development
 
 1. Clone the repository
