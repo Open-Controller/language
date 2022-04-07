@@ -101,7 +101,7 @@ mod tests {
         cmd.arg("/tmp/output.ocbin");
         let mut child = cmd.spawn()?;
 
-        sleep(Duration::from_millis(300));
+        sleep(Duration::from_millis(700));
 
         let bytes = Module::parse_from_bytes(&fs::read("/tmp/output.ocbin")?)?;
         child.kill()?;
