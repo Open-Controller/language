@@ -6,21 +6,6 @@ A compiler for OpenController house specifications.
 
 ## [Documentation](https://open-controller.github.io/language/)
 
-## Development
-
-1. Clone the repository
-
-        git clone https://github.com/Open-Controller/language.git
-        cd ./language
-
-2. Run with an ocdef file
-
-        cargo run ./test.ocdef ./result.ocbin
-
-3. Run tests
-
-        cargo test
-
 ## Installation
 
 1. Clone the repository
@@ -46,6 +31,8 @@ A compiler for OpenController house specifications.
     ARGS:
         <input>     Sets the input file to use
         <output>    Sets the output file to use
+
+## [Contributing](CONTRIBUTING.md)
 
 ## License
 
