@@ -6,17 +6,17 @@ edition = "2018"
 # See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
 
 [dependencies]
-pest = "2.0"
-pest_derive = "2.0"
+pest = "2.3.0"
+pest_derive = "2.3.0"
 protobuf = { git = "https://github.com/stepancheg/rust-protobuf.git" }
-anyhow = "1.0.45"
-clap = "2.33.3"
-structopt = "0.3.21"
-env_logger = "0.8.3"
-log = "0.4.0"
-relative-path = "1.5.0"
-assert_cmd = "2.0.2"
-predicates = "2.0.2"
+anyhow = "1.0.63"
+clap = "3.2.20"
+structopt = "0.3.26"
+env_logger = "0.9.0"
+log = "0.4.17"
+relative-path = "1.7.2"
+assert_cmd = "2.0.4"
+predicates = "2.1.1"
 
 [build-dependencies]
 protobuf-codegen = { git = "https://github.com/stepancheg/rust-protobuf.git" }
