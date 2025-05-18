@@ -455,8 +455,8 @@ fn parse_expr(rule: Pair<Rule>, file: String) -> Result<Expr> {
         }
         Rule::ref_expr => {
             let mut ref_expr = RefExpr::new();
-            ref_expr.set_field_ref(expr_inner.as_str().to_string());
-            expr.set_field_ref(ref_expr);
+            ref_expr.set_ref(expr_inner.as_str().to_string());
+            expr.set_ref(ref_expr);
         }
         Rule::lambda => {
             let mut lambda = LambdaExpr::new();
@@ -472,7 +472,7 @@ fn parse_expr(rule: Pair<Rule>, file: String) -> Result<Expr> {
                 lambda_inner.next().pos_err("Expected body", &expr_inner)?,
                 file,
             )?;
-            lambda.field_return = Some(body).into();
+            lambda.return_ = Some(body).into();
             expr.set_lambda(lambda);
         }
         Rule::get_lambda => {
@@ -481,9 +481,9 @@ fn parse_expr(rule: Pair<Rule>, file: String) -> Result<Expr> {
             let mut get_lambda_ref_expr = Expr::new();
             let mut get_lambda_ref = RefExpr::new();
             // Reference getLambda function
-            get_lambda_ref.set_field_ref("getLambda".to_string());
+            get_lambda_ref.set_ref("getLambda".to_string());
             // Set ref on expr
-            get_lambda_ref_expr.set_field_ref(get_lambda_ref);
+            get_lambda_ref_expr.set_ref(get_lambda_ref);
             // Set calling to the getLambda call
             get_lambda.calling = Some(get_lambda_ref_expr).into();
 
@@ -558,13 +558,13 @@ fn parse_expr(rule: Pair<Rule>, file: String) -> Result<Expr> {
                 if_expr.elif.push(elif);
             }
             // Get final else
-            if_expr.field_else = Some(parse_expr(
+            if_expr.else_ = Some(parse_expr(
                 if_inner.next().pos_err("Expected else", &expr_inner)?,
                 file,
             )?)
             .into();
 
-            expr.set_field_if(if_expr);
+            expr.set_if(if_expr);
         }
         Rule::index => {
             // Create expressions
@@ -572,8 +572,8 @@ fn parse_expr(rule: Pair<Rule>, file: String) -> Result<Expr> {
             let mut index_ref_expr = Expr::new();
             let mut index_ref = RefExpr::new();
             // Ref index function
-            index_ref.set_field_ref("index".to_string());
-            index_ref_expr.set_field_ref(index_ref);
+            index_ref.set_ref("index".to_string());
+            index_ref_expr.set_ref(index_ref);
             // Set expr calling to index function
             index.calling = Some(index_ref_expr).into();
 
